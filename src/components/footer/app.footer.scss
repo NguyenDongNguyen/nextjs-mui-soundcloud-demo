@@ -1,0 +1,28 @@
+.search-result {
+    width: 500px;
+
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        // max-height: min((100vh - 96px) - 60px, 734px);
+        min-height: 100px;
+        padding-top: 8px;
+        border-radius: 8px;
+        background: rgb(255, 255, 255);
+        box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+
+        .search-title {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 46px;
+            color: #333;
+            margin: 0;
+        }
+    }
+}
+
+.ps__rail-y {
+    left: unset !important;
+    right: 0 !important;
+}
