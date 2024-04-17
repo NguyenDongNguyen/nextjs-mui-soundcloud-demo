@@ -52,16 +52,15 @@ const Step1 = (props: IProps) => {
                 const audio = acceptedFiles[0];
                 // sử dụng form data để có thể truyền được file
                 const formData = new FormData();
-                formData.append('fileUpload', audio);
+                formData.append('fileUploadTracks', audio);
                 try {
                     // xử dụng axios để có thể hiển thị thanh tiến trình upload
                     const res = await axios.post(
-                        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`,
+                        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload-tracks`,
                         formData,
                         {
                             headers: {
                                 Authorization: `Bearer ${session?.access_token}`,
-                                target_type: 'tracks',
                             },
                             onUploadProgress: (progressEvent) => {
                                 let percentCompleted = Math.floor(
@@ -78,7 +77,7 @@ const Step1 = (props: IProps) => {
                     );
                     props.setTrackUpload((prevState: any) => ({
                         ...prevState,
-                        uploadedTrackName: res.data.data.fileName,
+                        uploadedTrackName: res.data.data.filename,
                     }));
                 } catch (error) {
                     //@ts-ignore

@@ -68,23 +68,25 @@ const PlaylistPage = async () => {
                 {playlists &&
                     playlists?.map((playlist) => {
                         return (
-                            <Accordion key={playlist._id}>
+                            <Accordion key={playlist.id}>
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                     <Typography sx={{ fontSize: '20px', color: '#ccc' }}>
-                                        {playlist.title}
+                                        {playlist.tieuDe}
                                     </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    {playlist?.tracks?.map((track, index: number) => {
-                                        return (
-                                            <Fragment key={track._id}>
-                                                {index === 0 && <Divider />}
-                                                <CurrentTrack track={track} />
-                                                <Divider />
-                                            </Fragment>
-                                        );
-                                    })}
-                                    {playlist?.tracks?.length === 0 && (
+                                    {playlist?.ChiTietDanhSaches?.map(
+                                        (track, index: number) => {
+                                            return (
+                                                <Fragment key={track.id}>
+                                                    {index === 0 && <Divider />}
+                                                    <CurrentTrack track={track} />
+                                                    <Divider />
+                                                </Fragment>
+                                            );
+                                        }
+                                    )}
+                                    {playlist?.ChiTietDanhSaches?.length === 0 && (
                                         <span>No data.</span>
                                     )}
                                 </AccordionDetails>

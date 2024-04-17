@@ -3,22 +3,22 @@ export {};
 
 declare global {
     interface ITrackTop {
-        _id: string;
-        title: string;
-        description: string;
-        category: string;
-        imgUrl: string;
-        trackUrl: string;
-        countLike: number;
-        countPlay: number;
-        uploader: {
-            _id: string;
+        id: string;
+        tieuDe: string;
+        moTa: string;
+        theLoai: string;
+        linkAnh: string;
+        linkNhac: string;
+        tongYeuThich: number;
+        tongLuotXem: number;
+        isPublic: boolean;
+        ThanhVien: {
+            id: string;
             email: string;
-            name: string;
-            role: string;
-            type: string;
+            ten: string;
+            quyen: string;
+            loaiTk: string;
         };
-        isDeleted: boolean;
         createdAt: string;
         updatedAt: string;
     }
@@ -60,39 +60,38 @@ declare global {
     }
 
     interface ITrackComment {
-        _id: string;
-        content: string;
-        moment: number;
-        user: {
-            _id: string;
+        id: string;
+        noiDung: string;
+        thoiGianBaiNhac: number;
+        ThanhVien: {
+            id: string;
             email: string;
-            name: string;
-            role: string;
-            type: string;
+            ten: string;
+            quyen: string;
+            loaiTk: string;
         };
-        track: string;
-        isDeleted: boolean;
+        BaiNhacId: string;
         createdAt: string;
         updatedAt: string;
     }
 
     interface ITrackLike {
-        _id: string;
-        title: string;
-        description: string;
-        category: string;
-        imgUrl: string;
-        trackUrl: string;
-        countLike: number;
-        countPlay: number;
+        id: string;
+        tieuDe: string;
+        moTa: string;
+        theLoai: string;
+        linkAnh: string;
+        linkNhac: string;
+        tongYeuThich: number;
+        tongLuotXem: number;
         createdAt: string;
         updatedAt: string;
     }
 
     interface IPlaylist {
-        _id: string;
-        title: string;
+        id: string;
+        tieuDe: string;
         isPublic: boolean;
-        tracks: IShareTrack[];
+        ChiTietDanhSaches: IShareTrack[];
     }
 }

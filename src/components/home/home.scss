@@ -1,0 +1,92 @@
+.button {
+    background-color: #f50 !important;
+    border-color: #f50 !important;
+    color: #fff !important;
+    text-transform: unset !important;
+    font-size: 17px !important;
+    font-weight: 400 !important;
+}
+
+.banner {
+    background: url('/background1.jpg') no-repeat;
+    width: 100%;
+    height: 450px;
+    border-top: 4px solid #f50;
+    display: flex;
+    flex-direction: column;
+
+    .header-banner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 25px;
+    }
+
+    .content-banner {
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+    }
+}
+
+.content {
+    .action-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .trending-tracks {
+        h2 {
+            font-size: 24px;
+            text-align: center;
+            padding-top: 30px;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+    }
+}
+
+.teaser {
+    background: url('/background2.jpg') no-repeat;
+    position: relative;
+    height: 350px;
+    background-color: #141414;
+    background-size: cover;
+    background-position: 100%;
+    background-repeat: no-repeat;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    padding: 0 570px 0 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    margin-top: 30px;
+
+    h1 {
+        font-size: 36px;
+        font-weight: 400;
+    }
+    p {
+        font-size: 24px;
+        line-height: 1.35;
+        margin: 11px 0 26px;
+    }
+}
+
+.signup-teaser {
+    text-align: center;
+    height: 375px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+
+    h1 {
+        font-size: 36px;
+        font-weight: 400;
+        color: #333;
+    }
+}

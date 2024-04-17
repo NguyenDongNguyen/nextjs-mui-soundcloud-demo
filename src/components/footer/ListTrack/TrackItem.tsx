@@ -13,20 +13,20 @@ function TrackItem({ track }: IProps) {
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
 
     return (
-        <div className="wrapper_book_item" key={track._id}>
+        <div className="wrapper_book_item" key={track.id}>
             <img
                 className="avatar"
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.linkAnh}`}
                 alt=""
             />
             <div className="info">
-                <span style={{ color: '#999' }}>{track.description}</span>
+                <span style={{ color: '#999' }}>{track.moTa}</span>
                 <h4 className="name">
-                    <span>{track.title}</span>
+                    <span>{track.tieuDe}</span>
                 </h4>
             </div>
-            {(track._id !== currentTrack._id ||
-                (track._id === currentTrack._id && currentTrack.isPlaying === false)) && (
+            {(track.id !== currentTrack.id ||
+                (track.id === currentTrack.id && currentTrack.isPlaying === false)) && (
                 <IconButton
                     aria-label="play/pause"
                     onClick={(e) => {
@@ -37,7 +37,7 @@ function TrackItem({ track }: IProps) {
                 </IconButton>
             )}
 
-            {track._id === currentTrack._id && currentTrack.isPlaying === true && (
+            {track.id === currentTrack.id && currentTrack.isPlaying === true && (
                 <IconButton
                     aria-label="play/pause"
                     onClick={(e) => {

@@ -38,7 +38,7 @@ const CommentTrack = (props: IProps) => {
             body: {
                 content: yourComment,
                 moment: Math.round(wavesurfer?.getCurrentTime() ?? 0),
-                track: track?._id,
+                track: track?.id,
             },
             headers: {
                 Authorization: `Bearer ${session?.access_token}`,
@@ -90,7 +90,7 @@ const CommentTrack = (props: IProps) => {
                     {comments?.map((comment) => {
                         return (
                             <Box
-                                key={comment._id}
+                                key={comment.id}
                                 sx={{
                                     display: 'flex',
                                     gap: '10px',
@@ -107,22 +107,26 @@ const CommentTrack = (props: IProps) => {
                                 >
                                     <img
                                         style={{ height: 40, width: 40 }}
-                                        src={fetchDefaultImages(comment.user.type)}
+                                        src={fetchDefaultImages(comment.ThanhVien.loaiTk)}
                                     />
                                     <div>
                                         <div style={{ fontSize: '13px' }}>
-                                            {comment?.user?.name ?? comment?.user?.email}{' '}
+                                            {comment?.ThanhVien?.ten ??
+                                                comment?.ThanhVien?.email}{' '}
                                             at
                                             <span
                                                 style={{ cursor: 'pointer' }}
                                                 onClick={() =>
-                                                    handleJumpTrack(comment.moment)
+                                                    handleJumpTrack(
+                                                        comment.thoiGianBaiNhac
+                                                    )
                                                 }
                                             >
-                                                &nbsp; {formatTime(comment.moment)}
+                                                &nbsp;{' '}
+                                                {formatTime(comment.thoiGianBaiNhac)}
                                             </span>
                                         </div>
-                                        <div>{comment.content}</div>
+                                        <div>{comment.noiDung}</div>
                                     </div>
                                 </Box>
                                 <div style={{ fontSize: '12px', color: '#999' }}>

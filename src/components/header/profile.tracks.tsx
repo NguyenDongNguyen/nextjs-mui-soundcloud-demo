@@ -16,7 +16,11 @@ import { useState } from 'react';
 import PauseIcon from '@mui/icons-material/Pause';
 import Link from 'next/link';
 
-const ProfileTracks = (props: any) => {
+interface Iprops {
+    data: ITrackTop;
+}
+
+const ProfileTracks = (props: Iprops) => {
     const { data } = props;
     const theme = useTheme();
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
@@ -32,10 +36,10 @@ const ProfileTracks = (props: any) => {
                             textDecoration: 'none',
                             color: 'unset',
                         }}
-                        href={`/track/${data._id}?audio=${data.trackUrl}&id=${data._id}`}
+                        href={`/track/${data.id}?audio=${data.linkNhac}&id=${data.id}`}
                     >
                         <Typography component="div" variant="h5">
-                            {data.title}
+                            {data.tieuDe}
                         </Typography>
                     </Link>
                     <Typography
@@ -43,7 +47,7 @@ const ProfileTracks = (props: any) => {
                         color="text.secondary"
                         component="div"
                     >
-                        {data.description}
+                        {data.moTa}
                     </Typography>
                 </CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
@@ -55,8 +59,8 @@ const ProfileTracks = (props: any) => {
                         )}
                     </IconButton>
 
-                    {(data._id !== currentTrack._id ||
-                        (data._id === currentTrack._id &&
+                    {(data.id !== currentTrack.id ||
+                        (data.id === currentTrack.id &&
                             currentTrack.isPlaying === false)) && (
                         <IconButton
                             aria-label="play/pause"
@@ -67,7 +71,7 @@ const ProfileTracks = (props: any) => {
                             <PlayArrowIcon sx={{ height: 38, width: 38 }} />
                         </IconButton>
                     )}
-                    {data._id === currentTrack._id && currentTrack.isPlaying === true && (
+                    {data.id === currentTrack.id && currentTrack.isPlaying === true && (
                         <IconButton
                             aria-label="play/pause"
                             onClick={(e) => {
@@ -90,7 +94,7 @@ const ProfileTracks = (props: any) => {
             <CardMedia
                 component="img"
                 sx={{ width: 160, height: 160 }}
-                image={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${data.imgUrl}`}
+                image={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${data.linkAnh}`}
                 alt="Live from space album cover"
             />
         </Card>

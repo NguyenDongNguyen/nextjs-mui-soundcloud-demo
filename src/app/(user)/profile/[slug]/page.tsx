@@ -5,18 +5,20 @@ import Grid from '@mui/material/Grid';
 
 const ProfileUserPage = async ({ params }: { params: { slug: string } }) => {
     const slug = params.slug;
+    console.log('🚀 ~ ProfileUserPage ~ slug:', slug);
 
-    const data = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/users?current=1&pageSize=10`,
+    const res = await sendRequest<IBackendRes<ITrackTop>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/users`,
         method: 'POST',
         body: { id: slug },
         nextOption: {
             next: { tags: ['track-by-profile'] },
         },
     });
+    console.log('🚀 ~ ProfileUserPage ~ res:', res);
 
     //@ts-ignore
-    const d = data?.data?.result ?? [];
+    const d = res?.data?.result ?? [];
     return (
         <Container sx={{ my: 5 }}>
             <Grid container spacing={5}>

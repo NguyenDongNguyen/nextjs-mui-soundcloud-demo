@@ -57,21 +57,21 @@ function InputFileUpload(props: any) {
 
     const handleUpload = async (image: any) => {
         const formData = new FormData();
-        formData.append('fileUpload', image);
+        formData.append('fileUploadImages', image);
         try {
             const res = await axios.post(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`,
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload-images`,
                 formData,
                 {
                     headers: {
                         Authorization: `Bearer ${session?.access_token}`,
-                        target_type: 'images',
                     },
                 }
             );
+            console.log('🚀 ~ handleUpload ~ res:', res);
             setInfo({
                 ...info,
-                imgUrl: res.data.data.fileName,
+                imgUrl: res.data.data.filename,
             });
         } catch (error) {
             //@ts-ignore
@@ -127,6 +127,7 @@ const Step2 = (props: IProps) => {
         category: '',
     });
 
+    console.log('🚀 ~ Step2 ~ info:', info);
     React.useEffect(() => {
         if (trackUpload && trackUpload.uploadedTrackName) {
             setInfo({
@@ -168,7 +169,9 @@ const Step2 = (props: IProps) => {
         });
         if (res.data) {
             setValue(0);
-            toast.success('Create a new track success!');
+            toast.success(
+                'Create a new track success, Please wait for response from admin !'
+            );
 
             await sendRequest<IBackendRes<any>>({
                 url: `/api/revalidate`,

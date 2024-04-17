@@ -49,7 +49,7 @@ const ClientSearch = () => {
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                         {tracks.map((track) => {
                             return (
-                                <div key={track._id}>
+                                <div key={track.id}>
                                     <Box
                                         sx={{
                                             display: 'flex',
@@ -60,7 +60,7 @@ const ClientSearch = () => {
                                         <img
                                             style={{ borderRadius: '3px' }}
                                             alt="avatar track"
-                                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
+                                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.linkAnh}`}
                                             height={50}
                                             width={50}
                                         />
@@ -70,9 +70,9 @@ const ClientSearch = () => {
                                                     textDecoration: 'none',
                                                     color: 'unset',
                                                 }}
-                                                href={`/track/${track._id}?audio=${track.trackUrl}&id=${track._id}`}
+                                                href={`/track/${track.id}?audio=${track.linkNhac}&id=${track.id}`}
                                             >
-                                                {track.title}
+                                                {track.tieuDe}
                                             </Link>
                                         </Typography>
                                     </Box>

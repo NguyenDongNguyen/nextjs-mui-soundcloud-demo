@@ -12,6 +12,7 @@ interface IProps {
 const LikeTrack = (props: IProps) => {
     const { track } = props;
     const { data: session } = useSession();
+    console.log('🚀 ~ LikeTrack ~ session:', session);
     const router = useRouter();
 
     const [trackLikes, setTrackLikes] = useState<ITrackLike[] | null>(null);
@@ -43,8 +44,8 @@ const LikeTrack = (props: IProps) => {
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
             method: 'POST',
             body: {
-                track: track?._id,
-                quantity: trackLikes?.some((t) => t._id === track?._id) ? -1 : 1,
+                track: track?.id,
+                quantity: trackLikes?.some((t) => t.id === track?.id) ? -1 : 1,
             },
             headers: {
                 Authorization: `Bearer ${session?.access_token}`,
@@ -67,19 +68,17 @@ const LikeTrack = (props: IProps) => {
                 sx={{ borderRadius: '5px' }}
                 size="medium"
                 variant="outlined"
-                color={
-                    trackLikes?.some((t) => t._id === track?._id) ? 'error' : 'default'
-                }
+                color={trackLikes?.some((t) => t.id === track?.id) ? 'error' : 'default'}
                 clickable
                 icon={<FavoriteIcon />}
                 label="Like"
             />
             <div style={{ display: 'flex', width: '100px', gap: '20px', color: '#999' }}>
                 <span style={{ display: 'flex', alignItems: 'center' }}>
-                    <PlayArrowIcon sx={{ fontSize: '20px' }} /> {track?.countPlay}
+                    <PlayArrowIcon sx={{ fontSize: '20px' }} /> {track?.tongLuotXem}
                 </span>
                 <span style={{ display: 'flex', alignItems: 'center' }}>
-                    <FavoriteIcon sx={{ fontSize: '20px' }} /> {track?.countLike}
+                    <FavoriteIcon sx={{ fontSize: '20px' }} /> {track?.tongYeuThich}
                 </span>
             </div>
         </div>

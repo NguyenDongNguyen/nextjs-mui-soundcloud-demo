@@ -20,36 +20,60 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { sendRequest } from '@/utils/api';
+import dayjs from 'dayjs';
 
-const AuthSignIn = (props: any) => {
+const AuthSignUp = (props: any) => {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [username, setUsername] = useState<string>('');
+    const [name, setName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [confirmPass, setComfirmPass] = useState<string>('');
+    const [birthday, setBirthday] = useState<string>('');
 
     const [isErrorUsername, setIsErrorUsername] = useState<boolean>(false);
+    const [isErrorEmail, setIsErrorEmail] = useState<boolean>(false);
     const [isErrorPassword, setIsErrorPassword] = useState<boolean>(false);
+    const [isErrorConfirm, setIsErrorConfirm] = useState<boolean>(false);
+    const [isErrorBirthday, setIsErrorBirthday] = useState<boolean>(false);
 
     const [errorUsername, setErrorUsername] = useState<string>('');
+    const [errorEmail, setErrorEmail] = useState<string>('');
     const [errorPassword, setErrorPassword] = useState<string>('');
+    const [errorConfirm, setErrorConfirm] = useState<string>('');
+    const [errorBirthday, setErrorBirthday] = useState<string>('');
 
     const [openMessage, setOpenMessage] = useState<boolean>(false);
     const [resMessage, setResMessage] = useState<string>('');
 
     const handleSubmit = async () => {
         setIsErrorUsername(false);
+        setIsErrorEmail(false);
         setIsErrorPassword(false);
+        setIsErrorConfirm(false);
         setErrorUsername('');
+        setErrorEmail('');
         setErrorPassword('');
+        setErrorConfirm('');
 
-        if (!username) {
+        if (!name) {
             setIsErrorUsername(true);
             setErrorUsername('Username is not empty.');
+            return;
+        }
+        if (!email) {
+            setIsErrorUsername(true);
+            setErrorUsername('Email is not empty.');
             return;
         }
         if (!password) {
@@ -57,32 +81,34 @@ const AuthSignIn = (props: any) => {
             setErrorPassword('Password is not empty.');
             return;
         }
+        if (!confirmPass) {
+            setIsErrorConfirm(true);
+            setErrorConfirm('Confirm Password is not empty.');
+            return;
+        }
+        if (confirmPass !== password) {
+            setIsErrorConfirm(true);
+            setErrorConfirm('Confirm Password is incorrect.');
+            return;
+        }
 
-        const res = await signIn('credentials', {
-            username: username,
-            password: password,
-            redirect: false,
+        const res = await sendRequest<IBackendRes<any>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/register`,
+            method: 'POST',
+            body: { email, name, password, birthday },
         });
-        if (!res?.error) {
+        if (res?.data) {
             //redirect to home
-            router.push('/discover');
+            router.push('/auth/signin');
+            setResMessage('Create account success, please sign in !');
         } else {
             setOpenMessage(true);
-            setResMessage(res.error);
+            setResMessage(res?.message);
         }
     };
 
     return (
-        <Box
-            sx={
-                {
-                    // backgroundImage:
-                    //     'linear-gradient(to bottom, #ff9aef, #fedac1, #d5e1cf, #b7e6d9)',
-                    // backgroundColor: '#b7e6d9',
-                    // backgroundRepeat: 'no-repeat',
-                }
-            }
-        >
+        <Box>
             <Grid
                 container
                 sx={{
@@ -131,76 +157,36 @@ const AuthSignIn = (props: any) => {
                                 component="h1"
                                 style={{ padding: '8px 0px', fontWeight: '500' }}
                             >
-                                To continue, login to Music Cloud
+                                Sign up to start listening
                             </Typography>
                         </Box>
 
-                        <Box
-                            sx={{
-                                gap: '25px',
-                                mt: 3,
-                            }}
-                        >
-                            <div
-                                className="social"
-                                style={{ backgroundColor: '#3578e5' }}
-                            >
-                                <FacebookOutlinedIcon
-                                    titleAccess="Login with Facebook"
-                                    style={{ color: '#fff' }}
-                                />
-                                <span className="name-social">
-                                    Continue with Facebook
-                                </span>
-                            </div>
-
-                            <div
-                                className="social"
-                                onClick={() => signIn('github')}
-                                style={{ backgroundColor: '#000' }}
-                            >
-                                <GitHubIcon
-                                    titleAccess="Login with Github"
-                                    style={{ color: '#fff' }}
-                                />
-                                <span className="name-social">Continue with Github</span>
-                            </div>
-
-                            <div
-                                className="social"
-                                onClick={() => signIn('google')}
-                                style={{ border: '1px solid #ccc' }}
-                            >
-                                <GoogleIcon
-                                    titleAccess="Login with Google"
-                                    style={{ color: 'orange' }}
-                                />
-                                <span className="name-social" style={{ color: '#000' }}>
-                                    Continue with Google
-                                </span>
-                            </div>
-                        </Box>
-                        <Divider>Or using</Divider>
-
                         <TextField
-                            onChange={(event) => setUsername(event.target.value)}
+                            onChange={(event) => setName(event.target.value)}
                             variant="outlined"
                             margin="normal"
                             required
                             fullWidth
                             label="Username"
-                            name="username"
+                            name="name"
                             autoFocus
                             error={isErrorUsername}
                             helperText={errorUsername}
                         />
                         <TextField
+                            onChange={(event) => setEmail(event.target.value)}
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            label="Email"
+                            name="email"
+                            autoFocus
+                            error={isErrorEmail}
+                            helperText={errorEmail}
+                        />
+                        <TextField
                             onChange={(event) => setPassword(event.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleSubmit();
-                                }
-                            }}
                             variant="outlined"
                             margin="normal"
                             required
@@ -226,6 +212,48 @@ const AuthSignIn = (props: any) => {
                                 ),
                             }}
                         />
+                        <TextField
+                            onChange={(event) => setComfirmPass(event.target.value)}
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="confirmPass"
+                            label="Confirm Password"
+                            type={showPassword ? 'text' : 'password'}
+                            error={isErrorConfirm}
+                            helperText={errorConfirm}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={() => setShowPassword(!showPassword)}
+                                        >
+                                            {showPassword === false ? (
+                                                <VisibilityOff />
+                                            ) : (
+                                                <Visibility />
+                                            )}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        {/* data picker */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={['DatePicker']}>
+                                <DemoItem label={'Birthday'}>
+                                    <DatePicker
+                                        // value={dayjs(birthday)}
+                                        onChange={(date) =>
+                                            //@ts-ignore
+                                            setBirthday(date?.$d.toISOString())
+                                        }
+                                    />
+                                </DemoItem>
+                            </DemoContainer>
+                        </LocalizationProvider>
+
                         <Button
                             sx={{
                                 my: 3,
@@ -237,22 +265,49 @@ const AuthSignIn = (props: any) => {
                             color="primary"
                             onClick={handleSubmit}
                         >
-                            Sign In
+                            Sign Up
                         </Button>
-                        <p
-                            style={{
-                                textAlign: 'center',
-                                textDecoration: 'underline',
-                                cursor: 'pointer',
+                        <Divider />
+
+                        <Box
+                            sx={{
+                                gap: '25px',
+                                mt: 3,
                             }}
                         >
-                            Forgot your password?
-                        </p>
-                        <Divider style={{ margin: '10px 0px' }} />
+                            <div
+                                className="social"
+                                style={{ backgroundColor: '#3578e5' }}
+                            >
+                                <FacebookOutlinedIcon
+                                    titleAccess="Login with Facebook"
+                                    style={{ color: '#fff' }}
+                                />
+                                <span className="name-social">
+                                    Continue with Facebook
+                                </span>
+                            </div>
+
+                            <div
+                                className="social"
+                                onClick={() => signIn('google')}
+                                style={{ border: '1px solid #ccc' }}
+                            >
+                                <GoogleIcon
+                                    titleAccess="Login with Google"
+                                    style={{ color: 'orange' }}
+                                />
+                                <span className="name-social" style={{ color: '#000' }}>
+                                    Continue with Google
+                                </span>
+                            </div>
+                        </Box>
+
+                        <Divider style={{ margin: '20px 0px' }} />
                         <div style={{ textAlign: 'center', color: '#A7A7A7' }}>
-                            Don't have an account?
+                            Already have an account?
                             <Link
-                                href={'/auth/signup'}
+                                href={'/auth/signin'}
                                 style={{
                                     color: '#121212',
                                     textDecoration: 'underline',
@@ -260,7 +315,7 @@ const AuthSignIn = (props: any) => {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Sign up for Music Cloud
+                                Log in here.
                             </Link>
                         </div>
                     </div>
@@ -284,4 +339,4 @@ const AuthSignIn = (props: any) => {
     );
 };
 
-export default AuthSignIn;
+export default AuthSignUp;

@@ -63,7 +63,7 @@ const AddPlaylistTrack = (props: IProps) => {
             return;
         }
 
-        const chosenPlaylist = playlists.find((i) => i._id === playlistId);
+        const chosenPlaylist = playlists.find((i) => i.id === playlistId);
         let tracks = tracksId?.map((item) => item?.split('###')?.[1]);
 
         //remove null/undefined/empty
@@ -73,8 +73,8 @@ const AddPlaylistTrack = (props: IProps) => {
                 url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/playlists`,
                 method: 'PATCH',
                 body: {
-                    id: chosenPlaylist._id,
-                    title: chosenPlaylist.title,
+                    id: chosenPlaylist.id,
+                    title: chosenPlaylist.tieuDe,
                     isPublic: chosenPlaylist.isPublic,
                     tracks: tracks,
                 },
@@ -127,8 +127,8 @@ const AddPlaylistTrack = (props: IProps) => {
                             >
                                 {playlists.map((item) => {
                                     return (
-                                        <MenuItem key={item._id} value={item._id}>
-                                            {item.title}
+                                        <MenuItem key={item.id} value={item.id}>
+                                            {item.tieuDe}
                                         </MenuItem>
                                     );
                                 })}
@@ -172,15 +172,15 @@ const AddPlaylistTrack = (props: IProps) => {
                                 {tracks.map((track) => {
                                     return (
                                         <MenuItem
-                                            key={track._id}
-                                            value={`${track.title}###${track._id}`}
+                                            key={track.id}
+                                            value={`${track.tieuDe}###${track.id}`}
                                             style={getStyles(
-                                                `${track.title}###${track._id}`,
+                                                `${track.tieuDe}###${track.id}`,
                                                 tracksId,
                                                 theme
                                             )}
                                         >
-                                            {track.title}
+                                            {track.tieuDe}
                                         </MenuItem>
                                     );
                                 })}

@@ -19,7 +19,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { fetchDefaultImages } from '@/utils/api';
 import ActiveLink from './active.link';
@@ -67,7 +67,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function AppHeader() {
     // client component thì sử dụng useSession để lấy session
     const { data: session } = useSession();
-    console.log('🚀 ~ AppHeader ~ session:', session);
 
     const router = useRouter();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -107,7 +106,7 @@ export default function AppHeader() {
         >
             <MenuItem onClick={handleMenuClose}>
                 <Link
-                    href={`/profile/${session?.user?._id}`}
+                    href={`/profile/${session?.user?.id}`}
                     style={{ color: 'unset', textDecoration: 'unset' }}
                 >
                     Profile
@@ -115,7 +114,7 @@ export default function AppHeader() {
             </MenuItem>
             <MenuItem
                 onClick={() => {
-                    handleMenuClose(), signOut();
+                    handleMenuClose(), signOut({ callbackUrl: '/', redirect: true });
                 }}
             >
                 Log out

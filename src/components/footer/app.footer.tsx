@@ -42,16 +42,16 @@ const AppFooter = () => {
     // }
 
     useEffect(() => {
-        if (currentTrack.category) {
+        if (currentTrack.theLoai) {
             fetchListTrack();
         }
-    }, [currentTrack?.category]);
+    }, [currentTrack?.theLoai]);
 
     const fetchListTrack = async () => {
         const res = await sendRequest<IBackendRes<ITrackTop[]>>({
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/top`,
             method: 'POST',
-            body: { category: currentTrack.category, limit: 100 },
+            body: { category: currentTrack.theLoai, limit: 100 },
         });
         if (res?.data) {
             setListTrack(res?.data);
@@ -61,7 +61,7 @@ const AppFooter = () => {
     // const findTrack = () => {
     //     if (currentTrack && listTrack) {
     //         const index = listTrack.findIndex((track) => {
-    //             track._id == currentTrack._id;
+    //             track.id == currentTrack.id;
     //         });
     //         console.log('🚀 ~ index ~ index:', index);
     //     }
@@ -70,7 +70,7 @@ const AppFooter = () => {
 
     const handleNext = () => {
         const index = listTrack.findIndex((track) => {
-            return track._id == currentTrack._id;
+            return track.id == currentTrack.id;
         });
         if (index > -1) {
             const i = index + 1;
@@ -84,7 +84,7 @@ const AppFooter = () => {
 
     const handlePrev = () => {
         const index = listTrack.findIndex((track) => {
-            return track._id == currentTrack._id;
+            return track.id == currentTrack.id;
         });
         if (index > -1) {
             const i = index - 1;
@@ -106,7 +106,7 @@ const AppFooter = () => {
 
     return (
         <>
-            {currentTrack._id && (
+            {currentTrack.id && (
                 <div style={{ marginTop: 50 }}>
                     <AppBar
                         position="fixed"
@@ -129,7 +129,7 @@ const AppFooter = () => {
                             <AudioPlayer
                                 ref={playerRef}
                                 layout="horizontal-reverse"
-                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.linkNhac}`}
                                 volume={0.5}
                                 style={{
                                     boxShadow: 'unset',
@@ -159,7 +159,7 @@ const AppFooter = () => {
                                 }}
                             >
                                 <div
-                                    title={currentTrack.description}
+                                    title={currentTrack.moTa}
                                     style={{
                                         width: '100%',
                                         color: '#ccc',
@@ -168,10 +168,10 @@ const AppFooter = () => {
                                         whiteSpace: 'nowrap',
                                     }}
                                 >
-                                    {currentTrack.description}
+                                    {currentTrack.moTa}
                                 </div>
                                 <div
-                                    title={currentTrack.title}
+                                    title={currentTrack.tieuDe}
                                     style={{
                                         width: '100%',
                                         color: 'black',
@@ -180,7 +180,7 @@ const AppFooter = () => {
                                         whiteSpace: 'nowrap',
                                     }}
                                 >
-                                    {currentTrack.title}
+                                    {currentTrack.tieuDe}
                                 </div>
                             </div>
                             <div

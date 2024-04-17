@@ -41,18 +41,18 @@ const LikePage = async () => {
             <Box sx={{ mt: 3, display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
                 {likes.map((track) => {
                     return (
-                        <Box key={track._id}>
+                        <Box key={track.id}>
                             <img
                                 style={{ borderRadius: '3px' }}
                                 alt="avatar track"
-                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.linkAnh}`}
                                 height={'200px'}
                                 width={'200px'}
                             />
                             <div>
                                 <Link
                                     style={{ textDecoration: 'none', color: 'unset' }}
-                                    href={`/track/${track._id}?audio=${track.trackUrl}&id=${track._id}`}
+                                    href={`/track/${track.id}?audio=${track.linkNhac}&id=${track.id}`}
                                 >
                                     <span
                                         style={{
@@ -64,7 +64,7 @@ const LikePage = async () => {
                                             whiteSpace: 'nowrap',
                                         }}
                                     >
-                                        {track.title}
+                                        {track.tieuDe}
                                     </span>
                                 </Link>
                             </div>

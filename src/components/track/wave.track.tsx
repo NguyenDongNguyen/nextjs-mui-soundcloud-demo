@@ -94,7 +94,7 @@ const WaveTrack = (props: IProps) => {
         const subscriptions = [
             wavesurfer.on('play', () => {
                 setIsPlaying(true);
-                if (track?.category !== currentTrack.category) {
+                if (track?.theLoai !== currentTrack.theLoai) {
                     console.log('test oke', track);
                     setCurrentTrack({
                         ...track!,
@@ -146,7 +146,7 @@ const WaveTrack = (props: IProps) => {
     }, [currentTrack]);
 
     useEffect(() => {
-        if (track?._id && !currentTrack?._id) {
+        if (track?.id && !currentTrack?.id) {
             setCurrentTrack({ ...track, isPlaying: false });
         }
     }, [track]);
@@ -166,7 +166,7 @@ const WaveTrack = (props: IProps) => {
                 url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/increase-view`,
                 method: 'POST',
                 body: {
-                    trackId: track?._id,
+                    trackId: track?.id,
                 },
             });
 
@@ -242,7 +242,7 @@ const WaveTrack = (props: IProps) => {
                                     color: 'white',
                                 }}
                             >
-                                {track?.title}
+                                {track?.tieuDe}
                             </div>
                             <div
                                 style={{
@@ -254,7 +254,7 @@ const WaveTrack = (props: IProps) => {
                                     color: 'white',
                                 }}
                             >
-                                {track?.description}
+                                {track?.moTa}
                             </div>
                         </div>
                     </div>
@@ -276,11 +276,13 @@ const WaveTrack = (props: IProps) => {
                         <div className="comments" style={{ position: 'relative' }}>
                             {comments.map((item) => {
                                 return (
-                                    <Tooltip title={item.content} arrow key={item._id}>
+                                    <Tooltip title={item.noiDung} arrow key={item.id}>
                                         <img
                                             onPointerMove={(e) => {
                                                 const hover = hoverRef.current!;
-                                                hover.style.width = calLeft(item.moment);
+                                                hover.style.width = calLeft(
+                                                    item.thoiGianBaiNhac
+                                                );
                                             }}
                                             style={{
                                                 height: 20,
@@ -288,9 +290,11 @@ const WaveTrack = (props: IProps) => {
                                                 position: 'absolute',
                                                 top: 71,
                                                 zIndex: 20,
-                                                left: calLeft(item.moment),
+                                                left: calLeft(item.thoiGianBaiNhac),
                                             }}
-                                            src={fetchDefaultImages(item.user.type)}
+                                            src={fetchDefaultImages(
+                                                item.ThanhVien.loaiTk
+                                            )}
                                         />
                                     </Tooltip>
                                 );
@@ -307,9 +311,9 @@ const WaveTrack = (props: IProps) => {
                         alignItems: 'center',
                     }}
                 >
-                    {track?.imgUrl ? (
+                    {track?.linkAnh ? (
                         <img
-                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
+                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.linkAnh}`}
                             style={{
                                 height: 'auto',
                                 width: '100%',

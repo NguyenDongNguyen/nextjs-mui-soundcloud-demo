@@ -1,3 +1,4 @@
+import { custom } from 'openid-client';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
@@ -7,6 +8,10 @@ import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import dayjs from 'dayjs';
 
+custom.setHttpOptionsDefaults({
+    timeout: 100000,
+});
+
 async function refreshAccessToken(token: JWT) {
     const res = await sendRequest<IBackendRes<JWT>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/refresh`,
@@ -15,9 +20,6 @@ async function refreshAccessToken(token: JWT) {
     });
 
     if (res.data) {
-        console.log('>>> check old token: ', token.access_token);
-        console.log('>>> check new token: ', res.data?.access_token);
-
         return {
             ...token,
             access_token: res.data?.access_token ?? '',
@@ -143,6 +145,7 @@ export const authOptions: AuthOptions = {
                 session.access_expire = token.access_expire;
                 session.error = token.error;
             }
+            console.log('🚀 ~ session ~ session:', session);
             return session;
         },
     },
