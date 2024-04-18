@@ -28,7 +28,10 @@ export default async function HomePage() {
     // });
 
     return (
-        <Container>
+        <Container sx={{ paddingTop: '30px' }}>
+            <h1 style={{ fontSize: '32px', fontWeight: '400', marginBottom: '20px' }}>
+                Discover Tracks and Playlists
+            </h1>
             <MainSlider title={'Top Chill'} data={chills?.data ?? []} />
             <MainSlider title={'Top Workout'} data={workouts?.data ?? []} />
             {/* <MainSlider title={'Top Party'} data={party?.data ?? []} /> */}

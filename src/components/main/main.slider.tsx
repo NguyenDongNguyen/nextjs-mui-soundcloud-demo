@@ -127,7 +127,7 @@ const MainSlider = (props: IProps) => {
                 onClick={props.onClick}
                 sx={{
                     position: 'absolute',
-                    right: 40,
+                    right: -10,
                     top: '25%',
                     zIndex: 2,
                     minWidth: 30,
@@ -170,18 +170,20 @@ const MainSlider = (props: IProps) => {
     return (
         <Box
             sx={{
-                margin: '0 50px',
                 '.track': {
                     padding: '0 10px 30px',
 
                     img: {
-                        height: 140,
-                        width: 140,
+                        height: 170,
+                        width: 170,
                     },
                 },
                 h2: {
                     fontWeight: 500,
-                    padding: '30px 0px',
+                    paddingBottom: '24px',
+                },
+                '.slick-slide': {
+                    width: '193px !important',
                 },
             }}
         >
@@ -223,7 +225,7 @@ const MainSlider = (props: IProps) => {
                     );
                 })}
             </Slider>
-            <Divider />
+            <Divider sx={{ marginBottom: '24px' }} />
         </Box>
     );
 };

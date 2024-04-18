@@ -81,6 +81,7 @@ const Home = ({ data }: Iprops) => {
                                 color: '#fff',
                                 borderColor: '#fff',
                                 outline: '#fff',
+                                textTransform: 'unset',
                             }}
                             onClick={() => router.push('/auth/signin')}
                         >

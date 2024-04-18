@@ -23,20 +23,19 @@ import { redirect, useRouter } from 'next/navigation';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { fetchDefaultImages } from '@/utils/api';
 import ActiveLink from './active.link';
+import { Button } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
+    backgroundColor: '#e5e5e5',
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
+    color: '#666',
     [theme.breakpoints.up('sm')]: {
         marginLeft: theme.spacing(3),
-        width: 'auto',
+        width: '400px',
     },
 }));
 
@@ -48,10 +47,11 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    right: 0,
+    color: '#333',
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
@@ -179,24 +179,54 @@ export default function AppHeader() {
             <AppBar position="static" sx={{ background: '#333' }}>
                 <Container>
                     <Toolbar>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
+                        <Box
                             sx={{
-                                display: { xs: 'none', sm: 'block' },
+                                display: 'flex',
+                                alignItems: 'center',
+                                marginLeft: '-30px',
                                 cursor: 'pointer',
                             }}
-                            onClick={() => router.push('/')}
                         >
-                            Sound Cloud
-                        </Typography>
+                            <img
+                                src="/logo_Music-Cloud.png"
+                                alt=""
+                                width={'210px'}
+                                height={'auto'}
+                                onClick={() => {
+                                    session ? router.push('/discover') : router.push('/');
+                                }}
+                            />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: { xs: 'none', md: 'flex' },
+                                alignItems: 'center',
+                                gap: '45px',
+                                paddingLeft: '25px',
+                                cursor: 'pointer',
+                                '> a': {
+                                    color: 'unset',
+                                    textDecoration: 'unset',
+                                    padding: '5px',
+
+                                    '&.active': {
+                                        background: '#3b4a59',
+                                        color: '#cefaff',
+                                        borderRadius: '5px',
+                                    },
+                                },
+                            }}
+                        >
+                            <ActiveLink href={'/discover'}>Home</ActiveLink>
+                            <ActiveLink href={'#'}>Feed</ActiveLink>
+                            <ActiveLink href={'#'}>Library</ActiveLink>
+                        </Box>
                         <Search>
                             <SearchIconWrapper>
                                 <SearchIcon />
                             </SearchIconWrapper>
                             <StyledInputBase
-                                placeholder="Search…"
+                                placeholder="Search for artists, bands, tracks, podcasts"
                                 inputProps={{ 'aria-label': 'search' }}
                                 onKeyDown={(e: any) => {
                                     if (e.key === 'Enter') {
@@ -204,9 +234,13 @@ export default function AppHeader() {
                                             router.push(`/search?q=${e?.target?.value}`);
                                     }
                                 }}
+                                sx={{
+                                    '.MuiInputBase-input': {
+                                        padding: '5px 10px',
+                                    },
+                                }}
                             />
                         </Search>
-                        <Box sx={{ flexGrow: 1 }} />
                         <Box
                             sx={{
                                 display: { xs: 'none', md: 'flex' },
@@ -243,7 +277,37 @@ export default function AppHeader() {
                                 </>
                             ) : (
                                 <>
-                                    <Link href={'/auth/signin'}>Login</Link>
+                                    <Button
+                                        variant="outlined"
+                                        size="small"
+                                        style={{
+                                            color: '#fff',
+                                            borderColor: '#666',
+                                            whiteSpace: 'nowrap',
+                                            textTransform: 'unset',
+                                        }}
+                                        onClick={() => router.push('/auth/signin')}
+                                    >
+                                        Sign In
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        style={{
+                                            marginLeft: '8px',
+                                            padding: '2px 14px',
+                                            backgroundColor: '#f50',
+                                            borderColor: '#f50',
+                                            color: '#fff',
+                                            textTransform: 'unset',
+                                            fontSize: '15px',
+                                            fontWeight: '400',
+                                            whiteSpace: 'nowrap',
+                                        }}
+                                        onClick={() => router.push('/auth/signup')}
+                                    >
+                                        Create account
+                                    </Button>
                                 </>
                             )}
                         </Box>
