@@ -19,6 +19,7 @@ const AppFooter = () => {
     const hasMounted = useHasMounted();
     const playerRef = useRef(null);
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
+    console.log('🚀 ~ AppFooter ~ currentTrack:', currentTrack);
     const [listTrack, setListTrack] = useState<ITrackTop[]>([]);
     const [showResult, setShowResult] = useState(false);
 

@@ -1,0 +1,20 @@
+.imgThumb {
+    position: relative;
+}
+
+.imgThumb:hover img {
+    filter: grayscale(40%);
+    -webkit-filter: grayscale(40%);
+    transition: filter 0.5s ease-in-out;
+}
+
+.imgThumb:hover .wrapper-action {
+    display: block;
+}
+
+.wrapper-action {
+    display: none;
+    position: absolute;
+    top: 65px;
+    left: 65px;
+}

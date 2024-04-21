@@ -189,7 +189,7 @@ const MainSlider = (props: IProps) => {
         >
             <h2> {title} </h2>
             <Slider {...settings}>
-                {data1.map((track) => {
+                {data.map((track) => {
                     return (
                         <div className="track" key={track.id}>
                             <img
@@ -206,7 +206,6 @@ const MainSlider = (props: IProps) => {
                                         color: '#333',
                                         fontSize: '16px',
                                         fontWeight: '400',
-                                        paddingTop: '5px',
                                     }}
                                 >
                                     {track.tieuDe}

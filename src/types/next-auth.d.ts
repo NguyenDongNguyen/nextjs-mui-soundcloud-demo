@@ -6,6 +6,7 @@ interface IUser {
     username: string;
     email: string;
     type: string;
+    birthday: string;
     role: string;
 }
 

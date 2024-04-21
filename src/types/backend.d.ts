@@ -2,8 +2,18 @@ export {};
 // https://bobbyhadz.com/blog/typescript-make-types-global#declare-global-types-in-typescript
 
 declare global {
-    interface ITrackTop {
+    interface IUserDetail {
         id: string;
+        email: string;
+        ten: string;
+        quyen: string;
+        ngaySinh: string;
+        hinhAnh: string;
+        loaiTk: string;
+    }
+
+    interface ITrackTop {
+        id: number;
         tieuDe: string;
         moTa: string;
         theLoai: string;
@@ -52,6 +62,7 @@ declare global {
 
     interface IShareTrack extends ITrackTop {
         isPlaying: boolean;
+        BaiNhacid?: number;
     }
 
     interface ITrackContext {
@@ -60,7 +71,7 @@ declare global {
     }
 
     interface ITrackComment {
-        id: string;
+        id: number;
         noiDung: string;
         thoiGianBaiNhac: number;
         ThanhVien: {
@@ -76,7 +87,7 @@ declare global {
     }
 
     interface ITrackLike {
-        id: string;
+        id: number;
         tieuDe: string;
         moTa: string;
         theLoai: string;
@@ -89,7 +100,7 @@ declare global {
     }
 
     interface IPlaylist {
-        id: string;
+        id: number;
         tieuDe: string;
         isPublic: boolean;
         ChiTietDanhSaches: IShareTrack[];

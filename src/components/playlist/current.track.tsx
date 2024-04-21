@@ -13,6 +13,7 @@ interface IProps {
 }
 const CurrentTrack = (props: IProps) => {
     const { track } = props;
+    console.log('🚀 ~ CurrentTrack ~ track:', track);
 
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
 
@@ -22,38 +23,47 @@ const CurrentTrack = (props: IProps) => {
                 <Link
                     style={{ textDecoration: 'none', color: 'unset' }}
                     // href={`/track/${convertSlugUrl(track.title)}-${
-                    //     track.id
+                    //     track._id
                     // }.html?audio=${track.trackUrl}`}
-                    href={`/track/${track.id}?audio=${track.linkNhac}&id=${track.id}`}
+                    href={`/track/${track.BaiNhacid}?audio=${track.linkNhac}&id=${track.BaiNhacid}`}
                 >
                     {track.tieuDe}
                 </Link>
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                {(track.id !== currentTrack.id ||
-                    (track.id === currentTrack.id &&
+                {(track.BaiNhacid !== currentTrack.id ||
+                    (track.BaiNhacid === currentTrack.id &&
                         currentTrack.isPlaying === false)) && (
                     <IconButton
                         aria-label="play/pause"
                         onClick={(e) => {
-                            setCurrentTrack({ ...track, isPlaying: true });
+                            setCurrentTrack({
+                                ...track,
+                                id: track.BaiNhacid!,
+                                isPlaying: true,
+                            });
                         }}
                     >
                         <PlayArrowIcon sx={{ height: 25, width: 25 }} />
                     </IconButton>
                 )}
 
-                {track.id === currentTrack.id && currentTrack.isPlaying === true && (
-                    <IconButton
-                        aria-label="play/pause"
-                        onClick={(e) => {
-                            setCurrentTrack({ ...track, isPlaying: false });
-                        }}
-                    >
-                        <PauseIcon sx={{ height: 25, width: 25 }} />
-                    </IconButton>
-                )}
+                {track.BaiNhacid === currentTrack.id &&
+                    currentTrack.isPlaying === true && (
+                        <IconButton
+                            aria-label="play/pause"
+                            onClick={(e) => {
+                                setCurrentTrack({
+                                    ...track,
+                                    id: track.BaiNhacid!,
+                                    isPlaying: false,
+                                });
+                            }}
+                        >
+                            <PauseIcon sx={{ height: 25, width: 25 }} />
+                        </IconButton>
+                    )}
             </Box>
         </Box>
     );

@@ -63,7 +63,7 @@ const AddPlaylistTrack = (props: IProps) => {
             return;
         }
 
-        const chosenPlaylist = playlists.find((i) => i.id === playlistId);
+        const chosenPlaylist = playlists.find((i) => i.id === parseInt(playlistId));
         let tracks = tracksId?.map((item) => item?.split('###')?.[1]);
 
         //remove null/undefined/empty

@@ -1,23 +1,26 @@
 'use client';
+import './app.header.scss';
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import PersonIcon from '@mui/icons-material/Person';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
+import LogoutIcon from '@mui/icons-material/Logout';
+import StarRateIcon from '@mui/icons-material/StarRate';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
 import { redirect, useRouter } from 'next/navigation';
 import { useSession, signIn, signOut } from 'next-auth/react';
@@ -103,21 +106,62 @@ export default function AppHeader() {
             onClose={handleMenuClose}
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            style={{ marginTop: '10px !important' }}
         >
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem onClick={handleMenuClose} className="menu">
                 <Link
                     href={`/profile/${session?.user?.id}`}
                     style={{ color: 'unset', textDecoration: 'unset' }}
                 >
-                    Profile
+                    <div className="menu-item">
+                        <PersonIcon style={{ width: '34px', height: '20px' }} />
+                        <span className="menu-item-title">Profile</span>
+                    </div>
+                </Link>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose} className="menu">
+                <Link
+                    href={`/profile/${session?.user?.id}`}
+                    style={{ color: 'unset', textDecoration: 'unset' }}
+                >
+                    <div className="menu-item">
+                        <FavoriteIcon style={{ width: '34px', height: '20px' }} />
+                        <span className="menu-item-title">Likes</span>
+                    </div>
+                </Link>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose} className="menu">
+                <Link
+                    href={`/profile/${session?.user?.id}`}
+                    style={{ color: 'unset', textDecoration: 'unset' }}
+                >
+                    <div className="menu-item">
+                        <PlaylistPlayIcon style={{ width: '34px', height: '20px' }} />
+                        <span className="menu-item-title">Playlists</span>
+                    </div>
+                </Link>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose} className="menu">
+                <Link
+                    href={`/profile/${session?.user?.id}`}
+                    style={{ color: 'unset', textDecoration: 'unset' }}
+                >
+                    <div className="menu-item">
+                        <StarRateIcon style={{ width: '34px', height: '20px' }} />
+                        <span className="menu-item-title">Try Next Pro</span>
+                    </div>
                 </Link>
             </MenuItem>
             <MenuItem
+                className="menu"
                 onClick={() => {
                     handleMenuClose(), signOut({ callbackUrl: '/', redirect: true });
                 }}
             >
-                Log out
+                <div className="menu-item">
+                    <LogoutIcon style={{ width: '34px', height: '20px' }} />
+                    <span className="menu-item-title">Log out</span>
+                </div>
             </MenuItem>
         </Menu>
     );
@@ -175,7 +219,21 @@ export default function AppHeader() {
     );
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box
+            sx={{
+                flexGrow: 1,
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                zIndex: '100',
+                overflowY: 'scroll',
+                overflowX: 'hidden',
+                '.MuiPaper-root': {
+                    marginTop: '0 !important',
+                },
+            }}
+        >
             <AppBar position="static" sx={{ background: '#333' }}>
                 <Container>
                     <Toolbar>
@@ -247,6 +305,7 @@ export default function AppHeader() {
                                 alignItems: 'center',
                                 gap: '20px',
                                 cursor: 'pointer',
+                                whiteSpace: 'nowrap',
                                 '> a': {
                                     color: 'unset',
                                     textDecoration: 'unset',
@@ -262,8 +321,11 @@ export default function AppHeader() {
                         >
                             {session ? (
                                 <>
-                                    <ActiveLink href={'/playlist'}>Playlist</ActiveLink>
-                                    <ActiveLink href={'/like'}>Likes</ActiveLink>
+                                    <ActiveLink href={'/try-next-pro'}>
+                                        <span style={{ color: '#ff5500' }}>
+                                            Try Next Pro
+                                        </span>
+                                    </ActiveLink>
                                     <ActiveLink href={'/track/upload'}>Upload</ActiveLink>
                                     <img
                                         onClick={handleProfileMenuOpen}
