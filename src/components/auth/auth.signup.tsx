@@ -295,7 +295,7 @@ const AuthSignUp = (props: any) => {
                             >
                                 <GoogleIcon
                                     titleAccess="Login with Google"
-                                    style={{ color: 'orange' }}
+                                    style={{ color: '#f93f2d' }}
                                 />
                                 <span className="name-social" style={{ color: '#000' }}>
                                     Continue with Google

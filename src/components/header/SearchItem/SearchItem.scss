@@ -1,0 +1,33 @@
+.wrapper_track_item {
+    display: flex;
+    align-items: center;
+    padding: 0px 16px;
+    color: #ccc;
+    cursor: pointer;
+    min-height: 44px;
+    background-color: #111;
+    font-size: 14px;
+
+    .info {
+        flex: 1;
+        margin-left: 12px;
+        max-height: 100%;
+    }
+
+    .name {
+        font-weight: 500;
+        line-height: normal;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    &:hover {
+        background: #333 !important;
+    }
+}
+
+a {
+    text-decoration: none;
+}

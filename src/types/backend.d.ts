@@ -2,6 +2,13 @@ export {};
 // https://bobbyhadz.com/blog/typescript-make-types-global#declare-global-types-in-typescript
 
 declare global {
+    interface IUserVip {
+        id: number;
+        ThanhVienId: number;
+        trangThai: boolean;
+        createdAt: string;
+        updatedAt: string;
+    }
     interface IUserDetail {
         id: string;
         email: string;
@@ -80,6 +87,7 @@ declare global {
             ten: string;
             quyen: string;
             loaiTk: string;
+            hinhAnh: string;
         };
         BaiNhacId: string;
         createdAt: string;

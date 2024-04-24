@@ -6,21 +6,26 @@ import { useWavesurfer } from '@/utils/customHook';
 import { WaveSurferOptions } from 'wavesurfer.js';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
+import GraphicEqIcon from '@mui/icons-material/GraphicEq';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import './wave.scss';
-import { Tooltip } from '@mui/material';
+import { Grid, IconButton, Tooltip } from '@mui/material';
 import { useTrackContext } from '@/lib/track.wrapper';
 import { fetchDefaultImages, sendRequest } from '@/utils/api';
 import CommentTrack from './comment.track';
 import LikeTrack from './like.track';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface IProps {
     track: ITrackTop | null;
     comments: ITrackComment[];
+    listTrack: ITrackTop[];
+    user: IUserDetail;
 }
 
 const WaveTrack = (props: IProps) => {
-    const { track, comments } = props;
+    const { track, comments, listTrack, user } = props;
     const router = useRouter();
     const firstViewRef = useRef(true);
 
@@ -292,9 +297,16 @@ const WaveTrack = (props: IProps) => {
                                                 zIndex: 20,
                                                 left: calLeft(item.thoiGianBaiNhac),
                                             }}
-                                            src={fetchDefaultImages(
-                                                item.ThanhVien.loaiTk
-                                            )}
+                                            // src={fetchDefaultImages(
+                                            //     item.ThanhVien.loaiTk
+                                            // )}
+                                            src={
+                                                item.ThanhVien.hinhAnh
+                                                    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${item.ThanhVien.hinhAnh}`
+                                                    : fetchDefaultImages(
+                                                          item.ThanhVien.loaiTk
+                                                      )
+                                            }
                                         />
                                     </Tooltip>
                                 );
@@ -336,7 +348,126 @@ const WaveTrack = (props: IProps) => {
             </div>
 
             <div>
-                <CommentTrack comments={comments} track={track} wavesurfer={wavesurfer} />
+                <Grid container spacing={5} columns={12}>
+                    <Grid item md={6} lg={9}>
+                        <CommentTrack
+                            // comments={comments}
+                            track={track}
+                            wavesurfer={wavesurfer}
+                            user={user}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        md={6}
+                        lg={3}
+                        style={{ marginTop: '50px', marginBottom: '25px' }}
+                    >
+                        <div className="sidebar-header">
+                            <GraphicEqIcon style={{ width: '24px', height: '24px' }} />
+                            <span>Related tracks</span>
+                        </div>
+                        {listTrack.map((data) => (
+                            <div className="sidebar-content">
+                                <div className="imgThumb">
+                                    <img
+                                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${data.linkAnh}`}
+                                        height={50}
+                                        width={50}
+                                    />
+                                    <div className="wrapper-action">
+                                        <div
+                                            style={{
+                                                borderRadius: '50%',
+                                                background: '#f50',
+                                                height: '25px',
+                                                width: '25px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            {(data.id !== currentTrack.id ||
+                                                (data.id === currentTrack.id &&
+                                                    currentTrack.isPlaying ===
+                                                        false)) && (
+                                                <IconButton
+                                                    aria-label="play/pause"
+                                                    onClick={(e) => {
+                                                        setCurrentTrack({
+                                                            ...data,
+                                                            isPlaying: true,
+                                                        });
+                                                    }}
+                                                >
+                                                    <PlayArrowIcon
+                                                        sx={{
+                                                            fontSize: 22,
+                                                            color: 'white',
+                                                        }}
+                                                    />
+                                                </IconButton>
+                                            )}
+                                            {data.id === currentTrack.id &&
+                                                currentTrack.isPlaying === true && (
+                                                    <IconButton
+                                                        aria-label="play/pause"
+                                                        onClick={(e) => {
+                                                            setCurrentTrack({
+                                                                ...data,
+                                                                isPlaying: false,
+                                                            });
+                                                        }}
+                                                    >
+                                                        <PauseIcon
+                                                            sx={{
+                                                                fontSize: 22,
+                                                                color: 'white',
+                                                            }}
+                                                        />
+                                                    </IconButton>
+                                                )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style={{ paddingLeft: '10px' }}>
+                                    <h5 className="sidebar-content-des">{data.moTa}</h5>
+                                    <Link
+                                        href={`/track/${data.id}?audio=${data.linkNhac}&id=${data.id}`}
+                                        style={{
+                                            textDecoration: 'none',
+                                        }}
+                                    >
+                                        <h4 className="sidebar-content-title">
+                                            {data.tieuDe}
+                                        </h4>
+                                    </Link>
+                                    <div className="sidebar-content-info">
+                                        <span>
+                                            <PlayArrowIcon
+                                                style={{
+                                                    width: '18px',
+                                                    height: '14px',
+                                                }}
+                                            />
+                                            {data.tongLuotXem}
+                                        </span>
+                                        <span>
+                                            <FavoriteIcon
+                                                style={{
+                                                    width: '16px',
+                                                    height: '12px',
+                                                }}
+                                            />
+                                            {data.tongYeuThich}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </Grid>
+                </Grid>
             </div>
         </div>
     );

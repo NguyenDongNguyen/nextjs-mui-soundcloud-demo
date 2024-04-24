@@ -24,9 +24,11 @@ import Container from '@mui/material/Container';
 import Link from 'next/link';
 import { redirect, useRouter } from 'next/navigation';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { fetchDefaultImages } from '@/utils/api';
+import { fetchDefaultImages, sendRequest } from '@/utils/api';
 import ActiveLink from './active.link';
 import { Button } from '@mui/material';
+import HeadlessTippy from '@tippyjs/react/headless';
+import SearchItem from './SearchItem/SearchItem';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -72,12 +74,41 @@ export default function AppHeader() {
     const { data: session } = useSession();
 
     const router = useRouter();
+    const [searchTerm, setSearchTerm] = React.useState('');
+    console.log('🚀 ~ AppHeader ~ searchTerm:', searchTerm);
+    const [showResult, setShowResult] = React.useState<boolean>(false);
+    console.log('🚀 ~ AppHeader ~ showResult:', showResult);
+    const [listSearch, setListSearch] = React.useState<ITrackTop[]>([]);
+    console.log('🚀 ~ AppHeader ~ listSearch:', listSearch);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    React.useEffect(() => {
+        fetchDataSearch(searchTerm);
+    }, [searchTerm]);
+
+    const fetchDataSearch = async (query: string) => {
+        if (searchTerm) {
+            console.log('🚀 ~ fetchDataSearch ~ query:', query);
+            const res = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({
+                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/search`,
+                method: 'POST',
+                body: {
+                    current: 1,
+                    pageSize: 10,
+                    title: query,
+                },
+            });
+            console.log('🚀 ~ fetchData ~ res:', res);
+            if (res.data?.result) {
+                setListSearch(res.data.result);
+            }
+        }
+    };
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -234,7 +265,7 @@ export default function AppHeader() {
                 },
             }}
         >
-            <AppBar position="static" sx={{ background: '#333' }}>
+            <AppBar sx={{ background: '#333' }}>
                 <Container>
                     <Toolbar>
                         <Box
@@ -279,26 +310,62 @@ export default function AppHeader() {
                             <ActiveLink href={'#'}>Feed</ActiveLink>
                             <ActiveLink href={'#'}>Library</ActiveLink>
                         </Box>
-                        <Search>
-                            <SearchIconWrapper>
-                                <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Search for artists, bands, tracks, podcasts"
-                                inputProps={{ 'aria-label': 'search' }}
-                                onKeyDown={(e: any) => {
-                                    if (e.key === 'Enter') {
-                                        if (e?.target?.value)
-                                            router.push(`/search?q=${e?.target?.value}`);
-                                    }
-                                }}
-                                sx={{
-                                    '.MuiInputBase-input': {
-                                        padding: '5px 10px',
-                                    },
-                                }}
-                            />
-                        </Search>
+                        <Box
+                            style={{ width: '100%' }}
+                            sx={{
+                                '#tippy-2': {
+                                    transform: 'translate(494px, 100%) !important',
+                                },
+                            }}
+                        >
+                            <HeadlessTippy
+                                interactive
+                                //@ts-ignore
+                                visible={
+                                    showResult && !!searchTerm && listSearch.length > 0
+                                }
+                                // visible={true}
+                                render={(attrs) => (
+                                    <div
+                                        className="search-result"
+                                        tabIndex={-1}
+                                        {...attrs}
+                                    >
+                                        <div className="wrapper-search">
+                                            <h4 className="title-search">
+                                                Search for {`"${searchTerm}"`}
+                                            </h4>
+                                            {listSearch &&
+                                                listSearch?.map((result) => (
+                                                    <SearchItem
+                                                        key={result.id}
+                                                        data={result}
+                                                    />
+                                                ))}
+                                        </div>
+                                    </div>
+                                )}
+                                onClickOutside={() => setShowResult(false)}
+                            >
+                                <Search>
+                                    <SearchIconWrapper>
+                                        <SearchIcon />
+                                    </SearchIconWrapper>
+                                    <StyledInputBase
+                                        placeholder="Search for artists, bands, tracks, podcasts"
+                                        inputProps={{ 'aria-label': 'search' }}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        onFocus={() => setShowResult(true)}
+                                        sx={{
+                                            '.MuiInputBase-input': {
+                                                padding: '5px 10px',
+                                            },
+                                        }}
+                                    />
+                                </Search>
+                            </HeadlessTippy>
+                        </Box>
+
                         <Box
                             sx={{
                                 display: { xs: 'none', md: 'flex' },

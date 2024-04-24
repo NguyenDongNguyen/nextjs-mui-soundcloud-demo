@@ -5,6 +5,7 @@
     text-transform: unset !important;
     font-size: 17px !important;
     font-weight: 400 !important;
+    white-space: nowrap !important;
 }
 
 .banner {
@@ -37,6 +38,30 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        .search-result {
+            width: 600px;
+
+            .wrapper-search {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                max-height: min((100vh - 96px) - 60px, 734px);
+                min-height: 100px;
+                border-radius: 8px;
+                background: rgb(255, 255, 255);
+                box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+
+                .title-search {
+                    padding: 8px 15px 12px;
+                    font-size: 15px;
+                    font-weight: 500;
+                    line-height: 16px;
+                    background-color: #333;
+                    color: #ccc;
+                }
+            }
+        }
     }
     .trending-tracks {
         h2 {
