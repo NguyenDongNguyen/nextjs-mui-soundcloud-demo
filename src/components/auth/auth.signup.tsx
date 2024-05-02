@@ -72,8 +72,8 @@ const AuthSignUp = (props: any) => {
             return;
         }
         if (!email) {
-            setIsErrorUsername(true);
-            setErrorUsername('Email is not empty.');
+            setIsErrorEmail(true);
+            setErrorEmail('Email is not empty.');
             return;
         }
         if (!password) {

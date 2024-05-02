@@ -11,9 +11,14 @@ import { PayPalButton } from 'react-paypal-button-v2';
 import { useSession } from 'next-auth/react';
 import { sendRequest } from '@/utils/api';
 import { useToast } from '@/utils/toast';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-const TryPro = () => {
+interface Iprops {
+    userVip: IUserVip;
+}
+
+const TryPro = ({ userVip }: Iprops) => {
+    const router = useRouter();
     const { data: session } = useSession();
     const [service, setService] = useState('service1');
     const [method, setMethod] = useState('paypal');
@@ -38,11 +43,12 @@ const TryPro = () => {
                 body: {
                     id: session?.user.id,
                     status: false,
+                    email: session?.user.email,
                 },
             });
             if (res.data) {
                 toast.success(res.message);
-                redirect('/discover');
+                router.push('/discover');
             }
         }
     };
@@ -192,14 +198,35 @@ const TryPro = () => {
                                                 All prices in VND
                                             </div>
                                         </div>
-                                        <PayPalButton
-                                            amount={Math.floor(1140000 / 24000)}
-                                            // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                                            onSuccess={onSuccessPaypal}
-                                            onError={() => {
-                                                alert('Erroe');
-                                            }}
-                                        />
+                                        {userVip ? (
+                                            <Button
+                                                className="button"
+                                                variant="contained"
+                                                size="small"
+                                                style={{
+                                                    marginLeft: '8px',
+                                                    padding: '10px 18px',
+                                                    color: 'red',
+                                                    textTransform: 'unset',
+                                                    fontSize: '16px',
+                                                }}
+                                                disabled
+                                                fullWidth
+                                            >
+                                                You have registered to become a VIP member
+                                            </Button>
+                                        ) : (
+                                            <div className="button-checkout">
+                                                <PayPalButton
+                                                    amount={Math.floor(1140000 / 24000)}
+                                                    // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                                                    onSuccess={onSuccessPaypal}
+                                                    onError={() => {
+                                                        alert('Erroe');
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 </Grid>
                             </Grid>

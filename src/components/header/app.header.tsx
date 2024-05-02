@@ -75,11 +75,8 @@ export default function AppHeader() {
 
     const router = useRouter();
     const [searchTerm, setSearchTerm] = React.useState('');
-    console.log('🚀 ~ AppHeader ~ searchTerm:', searchTerm);
     const [showResult, setShowResult] = React.useState<boolean>(false);
-    console.log('🚀 ~ AppHeader ~ showResult:', showResult);
     const [listSearch, setListSearch] = React.useState<ITrackTop[]>([]);
-    console.log('🚀 ~ AppHeader ~ listSearch:', listSearch);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
@@ -320,7 +317,6 @@ export default function AppHeader() {
                         >
                             <HeadlessTippy
                                 interactive
-                                //@ts-ignore
                                 visible={
                                     showResult && !!searchTerm && listSearch.length > 0
                                 }
@@ -388,7 +384,7 @@ export default function AppHeader() {
                         >
                             {session ? (
                                 <>
-                                    <ActiveLink href={'/try-next-pro'}>
+                                    <ActiveLink href={'/next-pro'}>
                                         <span style={{ color: '#ff5500' }}>
                                             Try Next Pro
                                         </span>
@@ -415,7 +411,8 @@ export default function AppHeader() {
                                             whiteSpace: 'nowrap',
                                             textTransform: 'unset',
                                         }}
-                                        onClick={() => router.push('/auth/signin')}
+                                        // onClick={() => router.push('/auth/signin')}
+                                        onClick={() => signIn()}
                                     >
                                         Sign In
                                     </Button>

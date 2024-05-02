@@ -2,6 +2,7 @@ import { custom } from 'openid-client';
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
+import FacebookProvider from 'next-auth/providers/facebook';
 import { AuthOptions } from 'next-auth';
 import { sendRequest } from '@/utils/api';
 import { JWT } from 'next-auth/jwt';
@@ -85,6 +86,10 @@ export const authOptions: AuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_ID!,
             clientSecret: process.env.GOOGLE_SECRET!,
+        }),
+        FacebookProvider({
+            clientId: process.env.FACEBOOK_CLIENT_ID!,
+            clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
         }),
     ],
     callbacks: {

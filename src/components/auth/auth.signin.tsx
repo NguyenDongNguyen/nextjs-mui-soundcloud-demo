@@ -25,9 +25,11 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import ForgotPassword from './forgot.password';
 
 const AuthSignIn = (props: any) => {
     const router = useRouter();
+    const [open, setOpen] = useState(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -144,6 +146,7 @@ const AuthSignIn = (props: any) => {
                             <div
                                 className="social"
                                 style={{ backgroundColor: '#3578e5' }}
+                                onClick={() => signIn('facebook')}
                             >
                                 <FacebookOutlinedIcon
                                     titleAccess="Login with Facebook"
@@ -245,6 +248,7 @@ const AuthSignIn = (props: any) => {
                                 textDecoration: 'underline',
                                 cursor: 'pointer',
                             }}
+                            onClick={() => setOpen(true)}
                         >
                             Forgot your password?
                         </p>
@@ -266,6 +270,8 @@ const AuthSignIn = (props: any) => {
                     </div>
                 </Grid>
             </Grid>
+
+            <ForgotPassword open={open} setOpen={setOpen} />
 
             <Snackbar
                 open={openMessage}

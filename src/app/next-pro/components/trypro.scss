@@ -1,3 +1,6 @@
+.button-checkout div div:nth-child(2) {
+    display: none !important;
+}
 .headline-container {
     background: linear-gradient(rgba(0, 0, 0, 0.1), #000),
         url('/background-pro.png') 50% / cover no-repeat;
