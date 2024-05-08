@@ -19,6 +19,30 @@ declare global {
         loaiTk: string;
     }
 
+    interface IUserFollow {
+        id: number;
+        nguoiTheoDoiId: number;
+        nguoiDuocTheoDoiId: number;
+        follower: {
+            id: number;
+            email: string;
+            ten: string;
+            quyen: string;
+            loaiTk: string;
+            hinhAnh: string;
+        };
+        followee: {
+            id: number;
+            email: string;
+            ten: string;
+            quyen: string;
+            loaiTk: string;
+            hinhAnh: string;
+        };
+        createdAt: string;
+        updatedAt: string;
+    }
+
     interface ITrackTop {
         id: number;
         tieuDe: string;
@@ -35,6 +59,7 @@ declare global {
             ten: string;
             quyen: string;
             loaiTk: string;
+            hinhAnh: string;
         };
         createdAt: string;
         updatedAt: string;

@@ -1,6 +1,10 @@
 import { fetchDefaultImages, sendRequest } from '@/utils/api';
-import { Box, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import GraphicEqIcon from '@mui/icons-material/GraphicEq';
+import GroupIcon from '@mui/icons-material/Group';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
@@ -12,6 +16,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Link from 'next/link';
 dayjs.extend(relativeTime);
 
 interface IProps {
@@ -30,6 +35,26 @@ const CommentTrack = (props: IProps) => {
     const [comments, setComments] = useState<ITrackComment[] | null>([]);
     const [yourComment, setYourComment] = useState('');
     const [sort, setSort] = useState('createdAtDesc');
+    const [listFollow, setListFollow] = useState<IUserFollow[] | null>(null);
+
+    const fetchData = async () => {
+        if (session?.access_token) {
+            const res2 = await sendRequest<IBackendRes<IModelPaginate<IUserFollow>>>({
+                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/follow/${user.id}`,
+                method: 'GET',
+                queryParams: {
+                    current: 1,
+                    pageSize: 100,
+                    status: 'follower',
+                },
+            });
+            if (res2?.data?.result) setListFollow(res2?.data?.result);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [session]);
 
     useEffect(() => {
         fetchComments();
@@ -79,6 +104,27 @@ const CommentTrack = (props: IProps) => {
         }
     };
 
+    const handleFollow = async () => {
+        await sendRequest<IBackendRes<any>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/follow`,
+            method: 'POST',
+            body: {
+                followerId: user.id, //ng theo dõi
+                followeeId: track?.ThanhVien.id, //ng được theo dõi
+                quantity: listFollow?.some(
+                    (t) => t.followee.id === parseInt(track!?.ThanhVien.id)
+                )
+                    ? -1
+                    : 1,
+            },
+            headers: {
+                Authorization: `Bearer ${session?.access_token}`,
+            },
+        });
+        fetchData();
+        router.refresh();
+    };
+
     const handleJumpTrack = (moment: number) => {
         if (wavesurfer) {
             const duration = wavesurfer.getDuration();
@@ -94,7 +140,27 @@ const CommentTrack = (props: IProps) => {
 
     return (
         <div>
-            <div style={{ marginTop: '50px', marginBottom: '25px' }}>
+            <div
+                style={{
+                    margin: '50px 0 25px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '10px',
+                }}
+            >
+                <img
+                    style={{
+                        height: 40,
+                        width: 40,
+                        borderRadius: '50%',
+                    }}
+                    src={
+                        user.hinhAnh
+                            ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.hinhAnh}`
+                            : fetchDefaultImages(user.loaiTk)
+                    }
+                />
                 {session?.user && (
                     <TextField
                         value={yourComment}
@@ -111,16 +177,83 @@ const CommentTrack = (props: IProps) => {
                 )}
             </div>
             <div style={{ display: 'flex', gap: '10px' }}>
-                <div className="left" style={{ width: '190px' }}>
-                    <img
-                        style={{ height: 150, width: 150, borderRadius: '50%' }}
-                        src={
-                            user.hinhAnh
-                                ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.hinhAnh}`
-                                : fetchDefaultImages(user.loaiTk)
-                        }
-                    />
-                    <div>{session?.user?.email}</div>
+                <div className="left" style={{ width: '190px', textAlign: 'center' }}>
+                    <Link
+                        href={`/profile/${track?.ThanhVien.id}`}
+                        style={{ color: 'unset' }}
+                    >
+                        <img
+                            style={{ height: 150, width: 150, borderRadius: '50%' }}
+                            src={
+                                track?.ThanhVien.hinhAnh
+                                    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${track?.ThanhVien.hinhAnh}`
+                                    : fetchDefaultImages(track!?.ThanhVien.loaiTk)
+                            }
+                        />
+                        <div style={{ textAlign: 'center' }}>{track?.ThanhVien.ten}</div>
+                    </Link>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: '15px',
+                            fontSize: '12px',
+                            color: '#999',
+                            margin: '5px 0',
+                        }}
+                    >
+                        <span
+                            style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                        >
+                            <GroupIcon sx={{ height: '20px', width: '20px' }} />{' '}
+                            <span>2284</span>
+                        </span>
+                        <span
+                            style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                        >
+                            <GraphicEqIcon sx={{ height: '20px', width: '20px' }} />{' '}
+                            <span>21</span>
+                        </span>
+                    </div>
+                    {listFollow?.some(
+                        (t) => t.followee.id === parseInt(track!?.ThanhVien.id)
+                    ) ? (
+                        <Button
+                            variant="contained"
+                            size="small"
+                            style={{
+                                padding: '2px 10px',
+                                fontSize: '12px',
+                                backgroundColor: 'transparent',
+                                boxShadow: 'unset',
+                                border: '1px solid #FF5500',
+                                color: '#FF5500',
+                                textTransform: 'unset',
+                                fontWeight: '100',
+                            }}
+                            startIcon={<PersonRemoveIcon />}
+                            onClick={handleFollow}
+                        >
+                            Following
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="contained"
+                            size="small"
+                            style={{
+                                padding: '2px 10px',
+                                fontSize: '12px',
+                                background: '#FF5500',
+                                color: '#fff',
+                                textTransform: 'unset',
+                                fontWeight: '100',
+                            }}
+                            startIcon={<PersonAddAltIcon />}
+                            onClick={handleFollow}
+                        >
+                            Follow
+                        </Button>
+                    )}
                 </div>
                 <div className="right" style={{ width: 'calc(100% - 200px)' }}>
                     <div

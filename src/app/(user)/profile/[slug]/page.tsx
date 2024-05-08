@@ -15,7 +15,7 @@ const ProfileUserPage = async ({ params }: { params: { slug: string } }) => {
     const res = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
         method: 'GET',
-        queryParams: { current: 1, pageSize: 100 },
+        queryParams: { current: 1, pageSize: 100, id: slug },
         headers: {
             Authorization: `Bearer ${session?.access_token}`,
         },
@@ -36,7 +36,7 @@ const ProfileUserPage = async ({ params }: { params: { slug: string } }) => {
     const res2 = await sendRequest<IBackendRes<IModelPaginate<IPlaylist>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/playlists/by-user`,
         method: 'POST',
-        queryParams: { current: 1, pageSize: 100 },
+        queryParams: { current: 1, pageSize: 100, id: slug },
         headers: {
             Authorization: `Bearer ${session?.access_token}`,
         },
@@ -57,7 +57,24 @@ const ProfileUserPage = async ({ params }: { params: { slug: string } }) => {
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/${slug}`,
         method: 'GET',
     });
-    console.log('🚀 ~ ProfileUserPage ~ res4:', res4);
+
+    const res5 = await sendRequest<IBackendRes<IModelPaginate<IUserFollow>>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/follow/${slug}`,
+        method: 'GET',
+        queryParams: { current: 1, pageSize: 100, status: 'follower' },
+        nextOption: {
+            next: { tags: ['follow-by-user'] },
+        },
+    });
+
+    const res6 = await sendRequest<IBackendRes<IModelPaginate<IUserFollow>>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/follow/${slug}`,
+        method: 'GET',
+        queryParams: { current: 1, pageSize: 100, status: 'followee' },
+        nextOption: {
+            next: { tags: ['follow-by-user'] },
+        },
+    });
 
     //@ts-ignore
     const d = res?.data?.result ?? [];
@@ -70,6 +87,8 @@ const ProfileUserPage = async ({ params }: { params: { slug: string } }) => {
                 playlists={res2?.data?.result ?? []}
                 tracks={res3?.data?.result ?? []}
                 user={res4?.data! ?? {}}
+                listFollower={res5?.data?.result ?? []}
+                listFollowing={res6?.data?.result ?? []}
             />
         </Container>
     );

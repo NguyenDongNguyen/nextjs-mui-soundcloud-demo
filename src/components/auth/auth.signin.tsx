@@ -146,7 +146,12 @@ const AuthSignIn = (props: any) => {
                             <div
                                 className="social"
                                 style={{ backgroundColor: '#3578e5' }}
-                                onClick={() => signIn('facebook')}
+                                onClick={() =>
+                                    signIn('facebook', {
+                                        callbackUrl: '/discover',
+                                        redirect: true,
+                                    })
+                                }
                             >
                                 <FacebookOutlinedIcon
                                     titleAccess="Login with Facebook"
@@ -159,7 +164,12 @@ const AuthSignIn = (props: any) => {
 
                             <div
                                 className="social"
-                                onClick={() => signIn('github')}
+                                onClick={() =>
+                                    signIn('github', {
+                                        callbackUrl: '/discover',
+                                        redirect: true,
+                                    })
+                                }
                                 style={{ backgroundColor: '#000' }}
                             >
                                 <GitHubIcon
@@ -171,7 +181,12 @@ const AuthSignIn = (props: any) => {
 
                             <div
                                 className="social"
-                                onClick={() => signIn('google')}
+                                onClick={() =>
+                                    signIn('google', {
+                                        callbackUrl: '/discover',
+                                        redirect: true,
+                                    })
+                                }
                                 style={{ border: '1px solid #ccc' }}
                             >
                                 <GoogleIcon

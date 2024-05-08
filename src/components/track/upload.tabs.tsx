@@ -117,9 +117,7 @@ const UploadTabs = ({ userVip }: Iprops) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} autoFocus>
-                        Agree
-                    </Button>
+                    <Button onClick={handleClose}>Agree</Button>
                 </DialogActions>
             </Dialog>
         </>

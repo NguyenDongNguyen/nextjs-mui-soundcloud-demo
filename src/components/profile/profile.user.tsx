@@ -25,7 +25,8 @@ import { IUser } from '@/types/next-auth';
 import { fetchDefaultImages } from '@/utils/api';
 import axios from 'axios';
 import { useToast } from '@/utils/toast';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 interface Iprops {
     listTrackLiked: ITrackTop[];
@@ -33,13 +34,25 @@ interface Iprops {
     playlists: IPlaylist[];
     tracks: ITrackTop[];
     user: IUserDetail;
+    listFollower: IUserFollow[];
+    listFollowing: IUserFollow[];
 }
 
 const Profile = (props: Iprops) => {
-    const { listTrackLiked, listTrackUploaded, playlists, tracks, user } = props;
+    const {
+        listTrackLiked,
+        listTrackUploaded,
+        playlists,
+        tracks,
+        user,
+        listFollower,
+        listFollowing,
+    } = props;
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
+    const { data: session } = useSession();
     const toast = useToast();
     const router = useRouter();
+    const params = useParams();
     const [value, setValue] = useState('1');
     const [open, setOpen] = useState(false);
 
@@ -69,17 +82,19 @@ const Profile = (props: Iprops) => {
         <div>
             <div className="profile-header">
                 <div className="avatar-upload">
-                    <div className="avatar-edit">
-                        <input
-                            type="file"
-                            id="imageUpload"
-                            accept=".png, .jpg, .jpeg"
-                            onChange={(e) => handleChangeAvatar(e)}
-                        />
-                        <label htmlFor="imageUpload">
-                            <CameraAltOutlinedIcon style={{ fontSize: 16 }} />
-                        </label>
-                    </div>
+                    {session?.user.id == params.slug && (
+                        <div className="avatar-edit">
+                            <input
+                                type="file"
+                                id="imageUpload"
+                                accept=".png, .jpg, .jpeg"
+                                onChange={(e) => handleChangeAvatar(e)}
+                            />
+                            <label htmlFor="imageUpload">
+                                <CameraAltOutlinedIcon style={{ fontSize: 16 }} />
+                            </label>
+                        </div>
+                    )}
                     <img
                         className="avatar-preview"
                         src={
@@ -93,17 +108,23 @@ const Profile = (props: Iprops) => {
                 <div className="profile-header-info">
                     <h1>{user.ten}</h1>
                     <p>{user.email}</p>
-                    <Button
-                        className="button-edit"
-                        variant="contained"
-                        size="small"
-                        onClick={() => setOpen(true)}
-                    >
-                        <EditIcon
-                            style={{ paddingRight: '3px', height: '22px', width: '22px' }}
-                        />
-                        Edit Profile
-                    </Button>
+                    {session?.user.id == params.slug && (
+                        <Button
+                            className="button-edit"
+                            variant="contained"
+                            size="small"
+                            onClick={() => setOpen(true)}
+                        >
+                            <EditIcon
+                                style={{
+                                    paddingRight: '3px',
+                                    height: '22px',
+                                    width: '22px',
+                                }}
+                            />
+                            Edit Profile
+                        </Button>
+                    )}
                 </div>
             </div>
 
@@ -182,6 +203,26 @@ const Profile = (props: Iprops) => {
                         </TabContext>
                     </Grid>
                     <Grid item md={3}>
+                        <div className="infoStats-table">
+                            <div
+                                className="infoStats"
+                                onClick={() => router.push(`/follow/${params.slug}`)}
+                            >
+                                <h3>Followers</h3>
+                                <div>{listFollower.length}</div>
+                            </div>
+                            <div
+                                className="infoStats"
+                                onClick={() => router.push(`/follow/${params.slug}`)}
+                            >
+                                <h3>Following</h3>
+                                <div>{listFollowing.length}</div>
+                            </div>
+                            <div className="infoStats" onClick={() => setValue('2')}>
+                                <h3>Tracks</h3>
+                                <div>{listTrackUploaded.length}</div>
+                            </div>
+                        </div>
                         <div className="sidebar-header">
                             <GraphicEqIcon style={{ width: '24px', height: '24px' }} />
                             <span>Related tracks</span>

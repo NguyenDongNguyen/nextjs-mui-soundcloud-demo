@@ -176,7 +176,7 @@ const Home = ({ data }: Iprops) => {
                                             height={170}
                                         />
                                         <Link
-                                            href={`#`}
+                                            href={`/track/${track.id}?audio=${track.linkNhac}&id=${track.id}`}
                                             style={{
                                                 textDecoration: 'none',
                                             }}

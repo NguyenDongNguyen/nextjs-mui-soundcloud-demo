@@ -18,6 +18,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import PersonIcon from '@mui/icons-material/Person';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
+import GroupIcon from '@mui/icons-material/Group';
 import LogoutIcon from '@mui/icons-material/Logout';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import Container from '@mui/material/Container';
@@ -166,6 +167,17 @@ export default function AppHeader() {
                     <div className="menu-item">
                         <PlaylistPlayIcon style={{ width: '34px', height: '20px' }} />
                         <span className="menu-item-title">Playlists</span>
+                    </div>
+                </Link>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose} className="menu">
+                <Link
+                    href={`/follow/${session?.user?.id}`}
+                    style={{ color: 'unset', textDecoration: 'unset' }}
+                >
+                    <div className="menu-item">
+                        <GroupIcon style={{ width: '34px', height: '20px' }} />
+                        <span className="menu-item-title">Following</span>
                     </div>
                 </Link>
             </MenuItem>
@@ -411,8 +423,7 @@ export default function AppHeader() {
                                             whiteSpace: 'nowrap',
                                             textTransform: 'unset',
                                         }}
-                                        // onClick={() => router.push('/auth/signin')}
-                                        onClick={() => signIn()}
+                                        onClick={() => router.push('/auth/signin')}
                                     >
                                         Sign In
                                     </Button>
