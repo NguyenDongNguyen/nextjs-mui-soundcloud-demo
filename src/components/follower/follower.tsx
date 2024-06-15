@@ -4,6 +4,7 @@ import './follower.scss';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Grid, Tab } from '@mui/material';
 import { useState } from 'react';
+import Link from 'next/link';
 
 interface IProps {
     listFollower: IUserFollow[];
@@ -28,10 +29,14 @@ const Follower = (props: IProps) => {
                         width: 100,
                         borderRadius: '50%',
                     }}
-                    src="/user/default-user.png"
+                    src={
+                        user.hinhAnh
+                            ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.hinhAnh}`
+                            : fetchDefaultImages(user.loaiTk)
+                    }
                     alt=""
                 />
-                <h1>Followers of {user.ten}</h1>
+                <h1>Theo dõi của {user.ten}</h1>
             </div>
 
             <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -57,17 +62,17 @@ const Follower = (props: IProps) => {
                                 style: { background: '#ff5500' },
                             }}
                         >
-                            <Tab label="Following" value="1" />
-                            <Tab label="Followers" value="2" />
+                            <Tab label="Đang theo dõi" value="1" />
+                            <Tab label="Người theo dõi" value="2" />
                         </TabList>
                     </Box>
                     <TabPanel value="1">
                         <Grid container spacing={2} columns={12}>
-                            {listFollower.map((user) => (
+                            {listFollowing.map((user) => (
                                 <Grid item md={2}>
                                     <img
                                         style={{
-                                            height: 'auto',
+                                            height: '170px',
                                             width: '100%',
                                             borderRadius: '50%',
                                         }}
@@ -79,8 +84,20 @@ const Follower = (props: IProps) => {
                                                   )
                                         }
                                     />
-                                    <div style={{ textAlign: 'center' }}>
-                                        {user?.followee.ten}
+                                    <div
+                                        style={{
+                                            textAlign: 'center',
+                                        }}
+                                    >
+                                        <Link
+                                            href={`/profile/${user?.followee.id}`}
+                                            style={{
+                                                textAlign: 'center',
+                                                color: 'unset',
+                                            }}
+                                        >
+                                            {user?.followee.ten}
+                                        </Link>
                                     </div>
                                 </Grid>
                             ))}
@@ -88,7 +105,7 @@ const Follower = (props: IProps) => {
                     </TabPanel>
                     <TabPanel value="2">
                         <Grid container spacing={2} columns={12}>
-                            {listFollowing?.map((user) => (
+                            {listFollower?.map((user) => (
                                 <Grid item md={2}>
                                     <img
                                         style={{

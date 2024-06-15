@@ -230,7 +230,7 @@ const Step2 = (props: IProps) => {
                                 title: e.target.value,
                             })
                         }
-                        label="Title"
+                        label="Tiêu đề"
                         variant="standard"
                         fullWidth
                         margin="dense"
@@ -243,7 +243,7 @@ const Step2 = (props: IProps) => {
                                 description: e.target.value,
                             })
                         }
-                        label="Description"
+                        label="Mô tả"
                         variant="standard"
                         fullWidth
                         margin="dense"
@@ -261,7 +261,7 @@ const Step2 = (props: IProps) => {
                         }}
                         id="outlined-select-currency"
                         select
-                        label="Category"
+                        label="Thể loại"
                         fullWidth
                         variant="standard"
                     >
@@ -278,7 +278,7 @@ const Step2 = (props: IProps) => {
                         }}
                         onClick={() => handleSubmitForm()}
                     >
-                        Save
+                        Lưu
                     </Button>
                 </Grid>
             </Grid>

@@ -91,7 +91,7 @@ const ResetPassword = ({ id, token }: { id: string; token: string }) => {
                             fontWeight: '500',
                         }}
                     >
-                        Change your password
+                        Thay đổi mật khẩu của bạn
                     </h1>
                     <p
                         style={{
@@ -101,11 +101,14 @@ const ResetPassword = ({ id, token }: { id: string; token: string }) => {
                             textAlign: 'center',
                         }}
                     >
-                        Choose a strong, unique password. <br /> For tips on choosing a
-                        secure password,{' '}
-                        <span style={{ color: '#38d' }}>visit our Help Center</span>.
+                        Chọn một mật khẩu mạnh và duy nhất. <br /> các mẹo chọn mật khẩu
+                        an toàn,{' '}
+                        <span style={{ color: '#38d' }}>
+                            truy cập Trung tâm trợ giúpr
+                        </span>
+                        .
                     </p>
-                    <div>Type your new password</div>
+                    <div>Nhập mật khẩu mới của bạn</div>
                     <TextField
                         onChange={(event) => setPassword(event.target.value)}
                         variant="outlined"
@@ -113,7 +116,7 @@ const ResetPassword = ({ id, token }: { id: string; token: string }) => {
                         required
                         fullWidth
                         name="password"
-                        label="Password"
+                        label="Mật khẩu"
                         type={showPassword ? 'text' : 'password'}
                         error={isErrorPassword}
                         helperText={errorPassword}
@@ -134,7 +137,7 @@ const ResetPassword = ({ id, token }: { id: string; token: string }) => {
                         }}
                     />
 
-                    <div>Type your new password again, to confirm</div>
+                    <div>Nhập lại mật khẩu mới của bạn để xác nhận</div>
                     <TextField
                         onChange={(event) => setComfirmPass(event.target.value)}
                         variant="outlined"
@@ -142,7 +145,7 @@ const ResetPassword = ({ id, token }: { id: string; token: string }) => {
                         required
                         fullWidth
                         name="confirmPass"
-                        label="Confirm Password"
+                        label="Nhập lại mật khẩu"
                         type={showPassword ? 'text' : 'password'}
                         error={isErrorConfirm}
                         helperText={errorConfirm}
@@ -174,7 +177,7 @@ const ResetPassword = ({ id, token }: { id: string; token: string }) => {
                         color="primary"
                         onClick={handleSubmit}
                     >
-                        Save
+                        Lưu
                     </Button>
                 </div>
             </div>

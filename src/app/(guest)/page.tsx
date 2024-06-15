@@ -1,5 +1,11 @@
+import type { Metadata } from 'next';
 import Home from '@/components/home/home';
 import { sendRequest } from '@/utils/api';
+
+export const metadata: Metadata = {
+    title: 'Listen to music online for free with MusicCloud',
+    description: 'just a description',
+};
 
 const HomePage = async () => {
     const tracks = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({

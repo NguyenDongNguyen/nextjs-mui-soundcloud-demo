@@ -110,7 +110,7 @@ const ProfileEdit = ({ open, setOpen, userInfo }: Iprops) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <h2 className="title">Edit your Profile</h2>
+                    <h2 className="title">Chỉnh sửa hồ sơ</h2>
                     <div>
                         <Grid container spacing={2} columns={24}>
                             <Grid item md={12} lg={9}>
@@ -128,7 +128,7 @@ const ProfileEdit = ({ open, setOpen, userInfo }: Iprops) => {
                                                     paddingRight: '5px',
                                                 }}
                                             />
-                                            Updated image
+                                            Ảnh đại diện
                                         </label>
                                     </div>
                                     <img
@@ -143,7 +143,7 @@ const ProfileEdit = ({ open, setOpen, userInfo }: Iprops) => {
                                 </div>
                             </Grid>
                             <Grid item md={12} lg={15}>
-                                <div>Display name</div>
+                                <div>Tên hiển thị</div>
                                 <TextField
                                     value={name}
                                     onChange={(event) => setName(event.target.value)}
@@ -181,7 +181,7 @@ const ProfileEdit = ({ open, setOpen, userInfo }: Iprops) => {
                                             },
                                         }}
                                     >
-                                        <DemoItem label={'Birthday'}>
+                                        <DemoItem label={'Ngày sinh'}>
                                             <DatePicker
                                                 value={dayjs(birthday)}
                                                 onChange={(date) =>
@@ -202,7 +202,7 @@ const ProfileEdit = ({ open, setOpen, userInfo }: Iprops) => {
                             size="small"
                             onClick={handleClose}
                         >
-                            Cancel
+                            Thoát
                         </Button>
                         <Button
                             className="button-edit"
@@ -211,7 +211,7 @@ const ProfileEdit = ({ open, setOpen, userInfo }: Iprops) => {
                             style={{ backgroundColor: '#ff5500', color: '#fff' }}
                             onClick={handleSubmit}
                         >
-                            Save changes
+                            Lưu thay đổi
                         </Button>
                     </div>
                 </Box>

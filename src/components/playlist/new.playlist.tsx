@@ -72,7 +72,7 @@ const NewPlaylist = (props: any) => {
                 startIcon={<AddIcon />}
                 onClick={() => setOpen(true)}
             >
-                Playlist
+                Danh sách
             </Button>
             <Dialog open={open} onClose={handleClose} maxWidth={'sm'} fullWidth>
                 <DialogTitle> Thêm mới playlist:</DialogTitle>
@@ -108,8 +108,8 @@ const NewPlaylist = (props: any) => {
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpen(false)}>Cancel</Button>
-                    <Button onClick={() => handleSubmit()}>Save</Button>
+                    <Button onClick={() => setOpen(false)}>Thoát</Button>
+                    <Button onClick={() => handleSubmit()}>Lưu</Button>
                 </DialogActions>
             </Dialog>
         </div>

@@ -17,6 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Link from 'next/link';
+import { useToast } from '@/utils/toast';
 dayjs.extend(relativeTime);
 
 interface IProps {
@@ -32,6 +33,7 @@ const CommentTrack = (props: IProps) => {
 
     const { track, wavesurfer, user } = props;
     const { data: session } = useSession();
+    const toast = useToast();
     const [comments, setComments] = useState<ITrackComment[] | null>([]);
     const [yourComment, setYourComment] = useState('');
     const [sort, setSort] = useState('createdAtDesc');
@@ -45,7 +47,7 @@ const CommentTrack = (props: IProps) => {
                 queryParams: {
                     current: 1,
                     pageSize: 100,
-                    status: 'follower',
+                    status: 'followee', // lấy ra ds những ng mình đang follow
                 },
             });
             if (res2?.data?.result) setListFollow(res2?.data?.result);
@@ -105,6 +107,11 @@ const CommentTrack = (props: IProps) => {
     };
 
     const handleFollow = async () => {
+        if (!session?.user.id) {
+            toast.error(' Please log in before following this user ');
+            return;
+        }
+
         await sendRequest<IBackendRes<any>>({
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/follow`,
             method: 'POST',
@@ -138,6 +145,8 @@ const CommentTrack = (props: IProps) => {
         setSort(event.target.value as string);
     };
 
+    console.log('check: ', user.id !== track!?.ThanhVien.id);
+
     return (
         <div>
             <div
@@ -149,30 +158,39 @@ const CommentTrack = (props: IProps) => {
                     gap: '10px',
                 }}
             >
-                <img
-                    style={{
-                        height: 40,
-                        width: 40,
-                        borderRadius: '50%',
-                    }}
-                    src={
-                        user.hinhAnh
-                            ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.hinhAnh}`
-                            : fetchDefaultImages(user.loaiTk)
-                    }
-                />
                 {session?.user && (
+                    <img
+                        style={{
+                            height: 40,
+                            width: 40,
+                            borderRadius: '50%',
+                        }}
+                        src={
+                            user.hinhAnh
+                                ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.hinhAnh}`
+                                : fetchDefaultImages(user.loaiTk)
+                        }
+                    />
+                )}
+                {session?.user ? (
                     <TextField
                         value={yourComment}
                         onChange={(e) => setYourComment(e.target.value)}
                         fullWidth
-                        label="Comments"
+                        label="Bình luận"
                         variant="standard"
                         onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                                 handleSubmit();
                             }
                         }}
+                    />
+                ) : (
+                    <TextField
+                        fullWidth
+                        label="Bạn phải đăng nhập để thực hiện bình luận"
+                        variant="standard"
+                        disabled={true}
                     />
                 )}
             </div>
@@ -183,7 +201,11 @@ const CommentTrack = (props: IProps) => {
                         style={{ color: 'unset' }}
                     >
                         <img
-                            style={{ height: 150, width: 150, borderRadius: '50%' }}
+                            style={{
+                                height: 150,
+                                width: 150,
+                                borderRadius: '50%',
+                            }}
                             src={
                                 track?.ThanhVien.hinhAnh
                                     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${track?.ThanhVien.hinhAnh}`
@@ -215,44 +237,48 @@ const CommentTrack = (props: IProps) => {
                             <span>21</span>
                         </span>
                     </div>
-                    {listFollow?.some(
-                        (t) => t.followee.id === parseInt(track!?.ThanhVien.id)
-                    ) ? (
-                        <Button
-                            variant="contained"
-                            size="small"
-                            style={{
-                                padding: '2px 10px',
-                                fontSize: '12px',
-                                backgroundColor: 'transparent',
-                                boxShadow: 'unset',
-                                border: '1px solid #FF5500',
-                                color: '#FF5500',
-                                textTransform: 'unset',
-                                fontWeight: '100',
-                            }}
-                            startIcon={<PersonRemoveIcon />}
-                            onClick={handleFollow}
-                        >
-                            Following
-                        </Button>
+                    {user.id != track!?.ThanhVien.id ? (
+                        listFollow?.some(
+                            (t) => t.followee.id === parseInt(track!?.ThanhVien.id)
+                        ) ? (
+                            <Button
+                                variant="contained"
+                                size="small"
+                                style={{
+                                    padding: '2px 10px',
+                                    fontSize: '12px',
+                                    backgroundColor: 'transparent',
+                                    boxShadow: 'unset',
+                                    border: '1px solid #FF5500',
+                                    color: '#FF5500',
+                                    textTransform: 'unset',
+                                    fontWeight: '100',
+                                }}
+                                startIcon={<PersonRemoveIcon />}
+                                onClick={handleFollow}
+                            >
+                                Đã theo dõi
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="contained"
+                                size="small"
+                                style={{
+                                    padding: '2px 10px',
+                                    fontSize: '12px',
+                                    background: '#FF5500',
+                                    color: '#fff',
+                                    textTransform: 'unset',
+                                    fontWeight: '100',
+                                }}
+                                startIcon={<PersonAddAltIcon />}
+                                onClick={handleFollow}
+                            >
+                                Theo dõi
+                            </Button>
+                        )
                     ) : (
-                        <Button
-                            variant="contained"
-                            size="small"
-                            style={{
-                                padding: '2px 10px',
-                                fontSize: '12px',
-                                background: '#FF5500',
-                                color: '#fff',
-                                textTransform: 'unset',
-                                fontWeight: '100',
-                            }}
-                            startIcon={<PersonAddAltIcon />}
-                            onClick={handleFollow}
-                        >
-                            Follow
-                        </Button>
+                        <></>
                     )}
                 </div>
                 <div className="right" style={{ width: 'calc(100% - 200px)' }}>
@@ -277,7 +303,7 @@ const CommentTrack = (props: IProps) => {
                             }}
                         >
                             <ChatBubbleIcon sx={{ paddingRight: '5px' }} />
-                            <span>{comments?.length} comments</span>
+                            <span>{comments?.length} bình luận</span>
                         </div>
                         <Box
                             sx={{
@@ -291,7 +317,7 @@ const CommentTrack = (props: IProps) => {
                         >
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-label">
-                                    Sorted by:
+                                    Sắp xếp theo:
                                 </InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -318,10 +344,10 @@ const CommentTrack = (props: IProps) => {
                                         },
                                     }}
                                 >
-                                    <MenuItem value={'createdAtDesc'}>Newest</MenuItem>
-                                    <MenuItem value={'createdAtEsc'}>Oldest</MenuItem>
+                                    <MenuItem value={'createdAtDesc'}>Mới nhất</MenuItem>
+                                    <MenuItem value={'createdAtEsc'}>Cũ nhất</MenuItem>
                                     <MenuItem value={'thoiGianBaiNhacDesc'}>
-                                        Track Time
+                                        Thời gian bài hát
                                     </MenuItem>
                                 </Select>
                             </FormControl>

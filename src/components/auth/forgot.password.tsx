@@ -81,16 +81,16 @@ const ForgotPassword = ({ open, setOpen }: Iprops) => {
                                 fontWeight: '600',
                             }}
                         >
-                            Don’t know your password?
+                            Bạn không biết mật khẩu của mình?
                         </h2>
-                        <div>Your email address or profile URL</div>
+                        <div>Nhập địa chỉ email hoặc URL hồ sơ</div>
                         <TextField
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
                             variant="outlined"
                             required
                             fullWidth
-                            label="Your email address or profile URL"
+                            label="Địa chỉ email hoặc URL hồ sơ của bạn"
                             name="email"
                             margin="dense"
                             autoFocus
@@ -104,10 +104,10 @@ const ForgotPassword = ({ open, setOpen }: Iprops) => {
                                 margin: '15px 0 12px',
                             }}
                         >
-                            We’ll send you a link to change your password. If you still
-                            need help,{' '}
+                            Chúng tôi sẽ gửi cho bạn một liên kết để thay đổi mật khẩu của
+                            bạn,{' '}
                             <span style={{ color: '#044dd2', cursor: 'pointer' }}>
-                                visit our Help Center
+                                Truy cập trung tâm trợ giúp
                             </span>
                             .
                         </p>
@@ -125,7 +125,7 @@ const ForgotPassword = ({ open, setOpen }: Iprops) => {
                             }}
                             onClick={handleSubmit}
                         >
-                            Request a password reset
+                            Yêu cầu đặt lại mật khẩu
                         </Button>
                         <div>
                             <Button
@@ -142,7 +142,7 @@ const ForgotPassword = ({ open, setOpen }: Iprops) => {
                                     textAlign: 'center',
                                 }}
                             >
-                                Cancel
+                                Thoát
                             </Button>
                         </div>
                     </div>

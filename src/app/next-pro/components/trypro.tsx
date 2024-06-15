@@ -82,12 +82,12 @@ const TryPro = ({ userVip }: Iprops) => {
                     <div className="logo">
                         <img src="logo_Music-Cloud.png" alt="" height={88} />
                     </div>
-                    <h1 className="text-large">Get Next Pro for ₫1,140,000/year</h1>
+                    <h1 className="text-large">Nhận Next Pro cho ₫1,140,000/năm</h1>
                     <h2 className="text-medium">
-                        Unlock the power of MusicCloud with our best plan for artists.
+                        Khai phá sức mạnh MusicCloud của chúng tôi dành cho nghệ sĩ.
                     </h2>
                     <h3 className="text-small">
-                        * Discount applies only to first year of subscription.
+                        * Ưu đãi chỉ áp dụng cho năm đăng ký đầu tiên.
                     </h3>
                     <Button
                         className="button"
@@ -100,7 +100,7 @@ const TryPro = ({ userVip }: Iprops) => {
                             })
                         }
                     >
-                        Get started
+                        Bắt đầu ngay
                     </Button>
                 </div>
                 <Container>
@@ -111,7 +111,7 @@ const TryPro = ({ userVip }: Iprops) => {
                                 <Grid item sm={12} md={6}>
                                     <div className="input-column">
                                         <div className="checkout-section">
-                                            <h2>1. Select payment plan</h2>
+                                            <h2>1. Chọn gói thanh toán</h2>
                                             <RadioGroup
                                                 name="package service"
                                                 value={service}
@@ -123,8 +123,8 @@ const TryPro = ({ userVip }: Iprops) => {
                                                     control={<Radio />}
                                                     label={
                                                         <>
-                                                            <h3> Pro package 1 </h3>
-                                                            <span>Fee ₫1,140,000</span>
+                                                            <h3> Gói Pro 1 </h3>
+                                                            <span>Phí ₫1,140,000</span>
                                                         </>
                                                     }
                                                 />
@@ -134,8 +134,8 @@ const TryPro = ({ userVip }: Iprops) => {
                                                     control={<Radio />}
                                                     label={
                                                         <>
-                                                            <h3> Pro package 2 </h3>
-                                                            <span>Fee ₫2,140,000</span>
+                                                            <h3> Gói Pro 2 </h3>
+                                                            <span>Phí ₫2,140,000</span>
                                                         </>
                                                     }
                                                     disabled
@@ -143,7 +143,7 @@ const TryPro = ({ userVip }: Iprops) => {
                                             </RadioGroup>
                                         </div>
                                         <div className="checkout-section">
-                                            <h2>2. Add payment details</h2>
+                                            <h2>2. Chọn phương thức thanh toán</h2>
                                             <RadioGroup
                                                 name="method payment"
                                                 value={method}
@@ -168,7 +168,7 @@ const TryPro = ({ userVip }: Iprops) => {
                                 </Grid>
                                 <Grid item sm={12} md={6}>
                                     <div className="review-column">
-                                        <h2>3. Review your purchase</h2>
+                                        <h2>3. Xem lại giao dịch mua hàng của bạn</h2>
                                         <div className="selected-plan">
                                             <img
                                                 src="/user/default-google.png"
@@ -180,22 +180,21 @@ const TryPro = ({ userVip }: Iprops) => {
                                         </div>
                                         <div className="review-container">
                                             <div className="total-container">
-                                                <h3>Total</h3>
+                                                <h3>Tổng tiền</h3>
                                                 <span>₫1,140,000</span>
                                             </div>
                                             <div className="service-container">
-                                                <h3>Pro package</h3>
+                                                <h3>Gói Pro</h3>
                                                 <span>1</span>
                                             </div>
                                             <div className="renowa-info">
-                                                Subscription will automatically renew at
-                                                ₫1,650,000 every year, starting Apr 24,
-                                                2025, unless you cancel before the day of
-                                                your next renewal in your subscription
-                                                settings.
+                                                Đăng ký sẽ tự động gia hạn ở mức
+                                                ₫1.650.000 mỗi năm, trừ khi bạn hủy trước
+                                                ngày gia hạn tiếp theo trong cài đặt đăng
+                                                ký của mình
                                             </div>
                                             <div className="caption">
-                                                All prices in VND
+                                                Tất cả giá bằng VNĐ
                                             </div>
                                         </div>
                                         {userVip ? (
@@ -213,7 +212,8 @@ const TryPro = ({ userVip }: Iprops) => {
                                                 disabled
                                                 fullWidth
                                             >
-                                                You have registered to become a VIP member
+                                                Bạn đã đăng kí trở thành một thành viên
+                                                VIP
                                             </Button>
                                         ) : (
                                             <div className="button-checkout">

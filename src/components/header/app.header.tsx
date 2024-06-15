@@ -75,6 +75,7 @@ export default function AppHeader() {
     const { data: session } = useSession();
 
     const router = useRouter();
+    const [dataUser, setDataUser] = React.useState<IUserDetail>({} as IUserDetail);
     const [searchTerm, setSearchTerm] = React.useState('');
     const [showResult, setShowResult] = React.useState<boolean>(false);
     const [listSearch, setListSearch] = React.useState<ITrackTop[]>([]);
@@ -88,6 +89,10 @@ export default function AppHeader() {
     React.useEffect(() => {
         fetchDataSearch(searchTerm);
     }, [searchTerm]);
+
+    React.useEffect(() => {
+        fetchDataUser();
+    }, [session]);
 
     const fetchDataSearch = async (query: string) => {
         if (searchTerm) {
@@ -105,6 +110,16 @@ export default function AppHeader() {
             if (res.data?.result) {
                 setListSearch(res.data.result);
             }
+        }
+    };
+
+    const fetchDataUser = async () => {
+        const res = await sendRequest<IBackendRes<IUserDetail>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/${session?.user.id}`,
+            method: 'GET',
+        });
+        if (res.data) {
+            setDataUser(res.data! ?? {});
         }
     };
 
@@ -144,7 +159,7 @@ export default function AppHeader() {
                 >
                     <div className="menu-item">
                         <PersonIcon style={{ width: '34px', height: '20px' }} />
-                        <span className="menu-item-title">Profile</span>
+                        <span className="menu-item-title">Hồ sơ</span>
                     </div>
                 </Link>
             </MenuItem>
@@ -155,7 +170,7 @@ export default function AppHeader() {
                 >
                     <div className="menu-item">
                         <FavoriteIcon style={{ width: '34px', height: '20px' }} />
-                        <span className="menu-item-title">Likes</span>
+                        <span className="menu-item-title">Yêu thích</span>
                     </div>
                 </Link>
             </MenuItem>
@@ -166,7 +181,7 @@ export default function AppHeader() {
                 >
                     <div className="menu-item">
                         <PlaylistPlayIcon style={{ width: '34px', height: '20px' }} />
-                        <span className="menu-item-title">Playlists</span>
+                        <span className="menu-item-title">Danh sách phát</span>
                     </div>
                 </Link>
             </MenuItem>
@@ -177,7 +192,7 @@ export default function AppHeader() {
                 >
                     <div className="menu-item">
                         <GroupIcon style={{ width: '34px', height: '20px' }} />
-                        <span className="menu-item-title">Following</span>
+                        <span className="menu-item-title">Theo dõi</span>
                     </div>
                 </Link>
             </MenuItem>
@@ -188,7 +203,7 @@ export default function AppHeader() {
                 >
                     <div className="menu-item">
                         <StarRateIcon style={{ width: '34px', height: '20px' }} />
-                        <span className="menu-item-title">Try Next Pro</span>
+                        <span className="menu-item-title">Mua gói VIP</span>
                     </div>
                 </Link>
             </MenuItem>
@@ -200,7 +215,7 @@ export default function AppHeader() {
             >
                 <div className="menu-item">
                     <LogoutIcon style={{ width: '34px', height: '20px' }} />
-                    <span className="menu-item-title">Log out</span>
+                    <span className="menu-item-title">Đăng xuất</span>
                 </div>
             </MenuItem>
         </Menu>
@@ -360,7 +375,7 @@ export default function AppHeader() {
                                         <SearchIcon />
                                     </SearchIconWrapper>
                                     <StyledInputBase
-                                        placeholder="Search for artists, bands, tracks, podcasts"
+                                        placeholder="Tìm kiếm nghệ sĩ, ban nhạc, bản nhạc, podcast"
                                         inputProps={{ 'aria-label': 'search' }}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         onFocus={() => setShowResult(true)}
@@ -398,18 +413,25 @@ export default function AppHeader() {
                                 <>
                                     <ActiveLink href={'/next-pro'}>
                                         <span style={{ color: '#ff5500' }}>
-                                            Try Next Pro
+                                            Mua gói VIP
                                         </span>
                                     </ActiveLink>
-                                    <ActiveLink href={'/track/upload'}>Upload</ActiveLink>
+                                    <ActiveLink href={'/track/upload'}>
+                                        Tải lên
+                                    </ActiveLink>
                                     <img
                                         onClick={handleProfileMenuOpen}
                                         style={{
                                             height: 35,
                                             width: 35,
+                                            borderRadius: '50%',
                                             cursor: 'pointer',
                                         }}
-                                        src={fetchDefaultImages(session.user.type)}
+                                        src={
+                                            dataUser.id
+                                                ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${dataUser.hinhAnh}`
+                                                : fetchDefaultImages(dataUser.id)
+                                        }
                                     />
                                 </>
                             ) : (
@@ -425,7 +447,7 @@ export default function AppHeader() {
                                         }}
                                         onClick={() => router.push('/auth/signin')}
                                     >
-                                        Sign In
+                                        Đăng nhập
                                     </Button>
                                     <Button
                                         variant="contained"
@@ -443,7 +465,7 @@ export default function AppHeader() {
                                         }}
                                         onClick={() => router.push('/auth/signup')}
                                     >
-                                        Create account
+                                        Tạo tài khoản
                                     </Button>
                                 </>
                             )}

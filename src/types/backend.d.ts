@@ -30,6 +30,7 @@ declare global {
             quyen: string;
             loaiTk: string;
             hinhAnh: string;
+            tongTheoDoi: number;
         };
         followee: {
             id: number;
@@ -38,6 +39,7 @@ declare global {
             quyen: string;
             loaiTk: string;
             hinhAnh: string;
+            tongTheoDoi: number;
         };
         createdAt: string;
         updatedAt: string;

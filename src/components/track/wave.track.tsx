@@ -8,8 +8,10 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import GroupIcon from '@mui/icons-material/Group';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import './wave.scss';
-import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Button, Grid, IconButton, Tooltip } from '@mui/material';
 import { useTrackContext } from '@/lib/track.wrapper';
 import { fetchDefaultImages, sendRequest } from '@/utils/api';
 import CommentTrack from './comment.track';
@@ -22,10 +24,12 @@ interface IProps {
     comments: ITrackComment[];
     listTrack: ITrackTop[];
     user: IUserDetail;
+    trackLiked: ITrackLike[];
+    playlists: IPlaylist[];
 }
 
 const WaveTrack = (props: IProps) => {
-    const { track, comments, listTrack, user } = props;
+    const { track, comments, listTrack, user, trackLiked, playlists } = props;
     const router = useRouter();
     const firstViewRef = useRef(true);
 
@@ -35,6 +39,7 @@ const WaveTrack = (props: IProps) => {
     const hoverRef = useRef<HTMLDivElement>(null);
     const [time, setTime] = useState<string>('0:00');
     const [duration, setDuration] = useState<string>('0:00');
+    const [listFollowing, setListFollowing] = useState<IUserFollow[] | []>([]);
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
 
     const optionsMemo = useMemo((): Omit<WaveSurferOptions, 'container'> => {
@@ -124,6 +129,24 @@ const WaveTrack = (props: IProps) => {
         };
     }, [wavesurfer]);
 
+    useEffect(() => {
+        fetchlistFollowing();
+    }, []);
+
+    const fetchlistFollowing = async () => {
+        const res = await sendRequest<IBackendRes<IModelPaginate<IUserFollow>>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/follow/${user.id}`,
+            method: 'GET',
+            queryParams: { current: 1, pageSize: 100, status: 'followee' },
+            nextOption: {
+                next: { tags: ['follow-by-user'] },
+            },
+        });
+        if (res.data?.result) {
+            setListFollowing(res?.data?.result ?? []);
+        }
+    };
+
     // On play button click
     const onPlayClick = useCallback(() => {
         if (wavesurfer) {
@@ -180,6 +203,19 @@ const WaveTrack = (props: IProps) => {
             // chỉ cho số lượt view tăng 1 lần
             firstViewRef.current = false;
         }
+    };
+
+    const handleFollow = async (followeeId: number) => {
+        await sendRequest<IBackendRes<any>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/follow`,
+            method: 'POST',
+            body: {
+                followerId: user.id, //ng theo dõi
+                followeeId: followeeId, //ng được theo dõi
+                quantity: -1,
+            },
+        });
+        fetchlistFollowing();
     };
 
     return (
@@ -344,12 +380,12 @@ const WaveTrack = (props: IProps) => {
             </div>
 
             <div>
-                <LikeTrack track={track} />
+                <LikeTrack track={track} trackLiked={trackLiked} playlists={playlists} />
             </div>
 
             <div>
-                <Grid container spacing={5} columns={12}>
-                    <Grid item md={6} lg={9}>
+                <Grid container spacing={3} columns={12}>
+                    <Grid item md={9}>
                         <CommentTrack
                             // comments={comments}
                             track={track}
@@ -357,17 +393,12 @@ const WaveTrack = (props: IProps) => {
                             user={user}
                         />
                     </Grid>
-                    <Grid
-                        item
-                        md={6}
-                        lg={3}
-                        style={{ marginTop: '50px', marginBottom: '25px' }}
-                    >
+                    <Grid item md={3} style={{ marginTop: '50px', marginBottom: '25px' }}>
                         <div className="sidebar-header">
                             <GraphicEqIcon style={{ width: '24px', height: '24px' }} />
-                            <span>Related tracks</span>
+                            <span>Bài hát liên quan</span>
                         </div>
-                        {listTrack.map((data) => (
+                        {listTrack?.slice(0, 4).map((data) => (
                             <div className="sidebar-content">
                                 <div className="imgThumb">
                                     <img
@@ -431,7 +462,7 @@ const WaveTrack = (props: IProps) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div style={{ paddingLeft: '10px' }}>
+                                <div>
                                     <h5 className="sidebar-content-des">{data.moTa}</h5>
                                     <Link
                                         href={`/track/${data.id}?audio=${data.linkNhac}&id=${data.id}`}
@@ -466,6 +497,70 @@ const WaveTrack = (props: IProps) => {
                                 </div>
                             </div>
                         ))}
+                        <div>
+                            <div className="sidebar-header">
+                                <GroupIcon style={{ width: '24px', height: '24px' }} />
+                                <span>Nghệ sĩ bạn theo dõi</span>
+                            </div>
+                            {listFollowing.map((user) => (
+                                <div className="sidebar-content">
+                                    <div className="imgThumb">
+                                        <img
+                                            src={
+                                                user?.followee.hinhAnh
+                                                    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user?.followee.hinhAnh}`
+                                                    : fetchDefaultImages(
+                                                          user?.followee.loaiTk
+                                                      )
+                                            }
+                                            height={50}
+                                            width={50}
+                                        />
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                        <Link
+                                            href={``}
+                                            style={{
+                                                textDecoration: 'none',
+                                            }}
+                                        >
+                                            <h4 className="sidebar-content-title">
+                                                {user?.followee.ten}
+                                            </h4>
+                                        </Link>
+                                        <div className="sidebar-content-info">
+                                            <span>
+                                                <GroupIcon
+                                                    style={{
+                                                        width: '18px',
+                                                        height: '14px',
+                                                    }}
+                                                />
+                                                {user?.followee.tongTheoDoi}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        style={{
+                                            padding: '1px 8px',
+                                            fontSize: '12px',
+                                            backgroundColor: 'transparent',
+                                            boxShadow: 'unset',
+                                            border: '1px solid #FF5500',
+                                            color: '#FF5500',
+                                            textTransform: 'unset',
+                                            fontWeight: '100',
+                                        }}
+                                        startIcon={<PersonRemoveIcon />}
+                                        onClick={() => handleFollow(user?.followee.id)}
+                                    >
+                                        Đã theo dõi
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
                     </Grid>
                 </Grid>
             </div>

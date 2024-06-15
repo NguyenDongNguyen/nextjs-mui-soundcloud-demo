@@ -157,7 +157,7 @@ const AuthSignUp = (props: any) => {
                                 component="h1"
                                 style={{ padding: '8px 0px', fontWeight: '500' }}
                             >
-                                Sign up to start listening
+                                Đăng ký để bắt đầu nghe
                             </Typography>
                         </Box>
 
@@ -167,7 +167,7 @@ const AuthSignUp = (props: any) => {
                             margin="normal"
                             required
                             fullWidth
-                            label="Username"
+                            label="Họ tên"
                             name="name"
                             autoFocus
                             error={isErrorUsername}
@@ -192,7 +192,7 @@ const AuthSignUp = (props: any) => {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="Mật khẩu"
                             type={showPassword ? 'text' : 'password'}
                             error={isErrorPassword}
                             helperText={errorPassword}
@@ -219,7 +219,7 @@ const AuthSignUp = (props: any) => {
                             required
                             fullWidth
                             name="confirmPass"
-                            label="Confirm Password"
+                            label="Xác nhận mật khẩu"
                             type={showPassword ? 'text' : 'password'}
                             error={isErrorConfirm}
                             helperText={errorConfirm}
@@ -242,7 +242,7 @@ const AuthSignUp = (props: any) => {
                         {/* data picker */}
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DemoContainer components={['DatePicker']}>
-                                <DemoItem label={'Birthday'}>
+                                <DemoItem label={'Ngày sinh'}>
                                     <DatePicker
                                         // value={dayjs(birthday)}
                                         onChange={(date) =>
@@ -265,7 +265,7 @@ const AuthSignUp = (props: any) => {
                             color="primary"
                             onClick={handleSubmit}
                         >
-                            Sign Up
+                            Đăng kí
                         </Button>
                         <Divider />
 
@@ -283,9 +283,7 @@ const AuthSignUp = (props: any) => {
                                     titleAccess="Login with Facebook"
                                     style={{ color: '#fff' }}
                                 />
-                                <span className="name-social">
-                                    Continue with Facebook
-                                </span>
+                                <span className="name-social">Tiếp tục với Facebook</span>
                             </div>
 
                             <div
@@ -298,14 +296,14 @@ const AuthSignUp = (props: any) => {
                                     style={{ color: '#f93f2d' }}
                                 />
                                 <span className="name-social" style={{ color: '#000' }}>
-                                    Continue with Google
+                                    Tiếp tục với Google
                                 </span>
                             </div>
                         </Box>
 
                         <Divider style={{ margin: '20px 0px' }} />
                         <div style={{ textAlign: 'center', color: '#A7A7A7' }}>
-                            Already have an account?
+                            Bạn đã có tài khoản?
                             <Link
                                 href={'/auth/signin'}
                                 style={{
@@ -315,7 +313,7 @@ const AuthSignUp = (props: any) => {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Log in here.
+                                Đăng nhập tại đây.
                             </Link>
                         </div>
                     </div>

@@ -133,7 +133,7 @@ const AuthSignIn = (props: any) => {
                                 component="h1"
                                 style={{ padding: '8px 0px', fontWeight: '500' }}
                             >
-                                To continue, login to Music Cloud
+                                Để tiếp tục, đăng nhập vào Music Cloud
                             </Typography>
                         </Box>
 
@@ -158,7 +158,7 @@ const AuthSignIn = (props: any) => {
                                     style={{ color: '#fff' }}
                                 />
                                 <span className="name-social">
-                                    Continue with Facebook
+                                    Đăng nhập với Facebook
                                 </span>
                             </div>
 
@@ -176,7 +176,7 @@ const AuthSignIn = (props: any) => {
                                     titleAccess="Login with Github"
                                     style={{ color: '#fff' }}
                                 />
-                                <span className="name-social">Continue with Github</span>
+                                <span className="name-social">Đăng nhập với Github</span>
                             </div>
 
                             <div
@@ -194,11 +194,11 @@ const AuthSignIn = (props: any) => {
                                     style={{ color: '#f93f2d' }}
                                 />
                                 <span className="name-social" style={{ color: '#000' }}>
-                                    Continue with Google
+                                    Đăng nhập với Google
                                 </span>
                             </div>
                         </Box>
-                        <Divider>Or using</Divider>
+                        <Divider>Hoặc sử dụng</Divider>
 
                         <TextField
                             onChange={(event) => setUsername(event.target.value)}
@@ -206,7 +206,7 @@ const AuthSignIn = (props: any) => {
                             margin="normal"
                             required
                             fullWidth
-                            label="Username"
+                            label="Tài khoản"
                             name="username"
                             autoFocus
                             error={isErrorUsername}
@@ -224,7 +224,7 @@ const AuthSignIn = (props: any) => {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="Mật khẩu"
                             type={showPassword ? 'text' : 'password'}
                             error={isErrorPassword}
                             helperText={errorPassword}
@@ -255,7 +255,7 @@ const AuthSignIn = (props: any) => {
                             color="primary"
                             onClick={handleSubmit}
                         >
-                            Sign In
+                            Đăng nhập
                         </Button>
                         <p
                             style={{
@@ -265,11 +265,11 @@ const AuthSignIn = (props: any) => {
                             }}
                             onClick={() => setOpen(true)}
                         >
-                            Forgot your password?
+                            Quên mật khẩu?
                         </p>
                         <Divider style={{ margin: '10px 0px' }} />
                         <div style={{ textAlign: 'center', color: '#A7A7A7' }}>
-                            Don't have an account?
+                            Bạn chưa có tài khoản?
                             <Link
                                 href={'/auth/signup'}
                                 style={{
@@ -279,7 +279,7 @@ const AuthSignIn = (props: any) => {
                                     cursor: 'pointer',
                                 }}
                             >
-                                Sign up for Music Cloud
+                                Đăng kí với Music Cloud
                             </Link>
                         </div>
                     </div>

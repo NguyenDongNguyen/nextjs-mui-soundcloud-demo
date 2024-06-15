@@ -32,11 +32,42 @@ const DetailTrackPage = async (props: any) => {
         headers: {
             Authorization: `Bearer ${session?.access_token}`,
         },
+        nextOption: {
+            next: { tags: ['handle-like-track'] },
+        },
     });
 
     const res3 = await sendRequest<IBackendRes<IUserDetail>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/${session?.user.id}`,
         method: 'GET',
+    });
+
+    const res4 = await sendRequest<IBackendRes<IModelPaginate<ITrackLike>>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
+        method: 'GET',
+        queryParams: {
+            current: 1,
+            pageSize: 100,
+            id: session?.user?.id,
+        },
+        headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+        },
+        nextOption: {
+            next: { tags: ['handle-like-track'] },
+        },
+    });
+
+    const res5 = await sendRequest<IBackendRes<IModelPaginate<IPlaylist>>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/playlists/by-user`,
+        method: 'POST',
+        queryParams: { current: 1, pageSize: 100, id: session?.user.id },
+        headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+        },
+        nextOption: {
+            next: { tags: ['playlist-by-user'] },
+        },
     });
 
     return (
@@ -47,6 +78,8 @@ const DetailTrackPage = async (props: any) => {
                     comments={res1?.data?.result ?? []}
                     listTrack={res2?.data?.result ?? []}
                     user={res3?.data! ?? {}}
+                    trackLiked={res4.data?.result ?? []}
+                    playlists={res5?.data?.result ?? []}
                 />
             </div>
         </Container>

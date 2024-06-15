@@ -85,7 +85,7 @@ const Home = ({ data }: Iprops) => {
                             }}
                             onClick={() => router.push('/auth/signin')}
                         >
-                            Sign In
+                            Đăng nhập
                         </Button>
                         <Button
                             className="button"
@@ -97,7 +97,7 @@ const Home = ({ data }: Iprops) => {
                             }}
                             onClick={() => router.push('/auth/signup')}
                         >
-                            Create account
+                            Tạo tài khoản
                         </Button>
                     </div>
                 </div>
@@ -105,7 +105,7 @@ const Home = ({ data }: Iprops) => {
                     <h1
                         style={{ marginBottom: '8px', fontSize: '40px', fontWeight: 400 }}
                     >
-                        Connect on Music Cloud
+                        Kết nối trên Music Cloud
                     </h1>
                     <p
                         style={{
@@ -114,8 +114,8 @@ const Home = ({ data }: Iprops) => {
                             textAlign: 'center',
                         }}
                     >
-                        Discover, stream, and share a constantly expanding mix of music
-                        from emerging and major artists around the world.
+                        Khám phá và chia sẻ danh sách kết hợp âm nhạc không ngừng mở rộng
+                        từ các nghệ sĩ lớn và mới nổi trên khắp thế giới.
                     </p>
                     <div>
                         <Button
@@ -128,7 +128,7 @@ const Home = ({ data }: Iprops) => {
                             }}
                             onClick={() => router.push('/auth/signup')}
                         >
-                            Sign up for free
+                            Đăng kí miễn phí
                         </Button>
                     </div>
                 </div>
@@ -145,7 +145,7 @@ const Home = ({ data }: Iprops) => {
                             inputProps={{ 'aria-label': 'search' }}
                         />
                     </Search>
-                    <span style={{ paddingRight: '12px', fontSize: '18px' }}>or</span>
+                    <span style={{ paddingRight: '12px', fontSize: '18px' }}>hoặc</span>
                     <Button
                         className="button"
                         variant="contained"
@@ -154,11 +154,11 @@ const Home = ({ data }: Iprops) => {
                             padding: '10px 28px',
                         }}
                     >
-                        Upload your own
+                        Tải lên của riêng bạn
                     </Button>
                 </div>
                 <div className="trending-tracks">
-                    <h2>Hear what’s trending for free in the SoundCloud community</h2>
+                    <h2>Nghe nhạc đang thịnh hành miễn phí trong cộng đồng MusicCloud</h2>
                     <div className="list-tracks">
                         <Grid container spacing={2} columns={12}>
                             {data.map((track) => {
@@ -216,17 +216,17 @@ const Home = ({ data }: Iprops) => {
                             }}
                             onClick={() => router.push('/discover')}
                         >
-                            Explore trending playlists
+                            Khám phá danh phát thịnh hành
                         </Button>
                     </div>
                 </div>
             </div>
 
             <div className="teaser">
-                <h1>Calling all creators</h1>
+                <h1>Kêu gọi nhà sáng tạo</h1>
                 <p>
-                    Get on SoundCloud to connect with fans, share your sounds, and grow
-                    your audience. What are you waiting for?
+                    Hãy truy cập MusicCloud để kết nối với người hâm mộ, chia sẻ âm thanh
+                    và tăng lượng khán giả. Bạn còn chờ gì nữa??
                 </p>
                 <Button
                     variant="outlined"
@@ -237,14 +237,15 @@ const Home = ({ data }: Iprops) => {
                         outline: '#fff',
                     }}
                 >
-                    Find out more
+                    Tìm hiểu thêm
                 </Button>
             </div>
 
             <div className="signup-teaser">
-                <h1>Thanks for listening. Now join in.</h1>
+                <h1>Cảm ơn vì đã lắng nghe. tham gia ngay.</h1>
                 <p style={{ fontSize: '24px', margin: '7px 0 10px' }}>
-                    Save tracks, follow artists and build playlists. All for free.
+                    Lưu bản nhạc, theo dõi nghệ sĩ và xây dựng danh sách phát. Tất cả đều
+                    miễn phí.
                 </p>
                 <div>
                     <Button
@@ -257,11 +258,11 @@ const Home = ({ data }: Iprops) => {
                         }}
                         onClick={() => router.push('/auth/signup')}
                     >
-                        Create account
+                        Tạo tài khoản
                     </Button>
                 </div>
                 <p>
-                    Already have an account?{' '}
+                    Bạn đã có tài khoản?{' '}
                     <Button
                         variant="outlined"
                         size="medium"
@@ -275,7 +276,7 @@ const Home = ({ data }: Iprops) => {
                         }}
                         onClick={() => router.push('/auth/signin')}
                     >
-                        Sign in
+                        Đăng nhập
                     </Button>{' '}
                 </p>
             </div>

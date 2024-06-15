@@ -1,0 +1,22 @@
+.wrapper-track {
+    .imgThumb {
+        position: relative;
+    }
+
+    .imgThumb:hover img {
+        filter: grayscale(40%);
+        -webkit-filter: grayscale(40%);
+        transition: filter 0.5s ease-in-out;
+    }
+
+    .wrapper-track:hover .wrapper-action {
+        display: block;
+    }
+
+    .wrapper-action {
+        display: none;
+        position: absolute;
+        top: 7px;
+        left: 7px;
+    }
+}

@@ -84,8 +84,8 @@ const UploadTabs = ({ userVip }: Iprops) => {
                             onChange={handleChange}
                             aria-label="basic tabs example"
                         >
-                            <Tab label="Tracks" disabled={value !== 0} />
-                            <Tab label="Basic information" disabled={value !== 1} />
+                            <Tab label="Bài nhạc" disabled={value !== 0} />
+                            <Tab label="Thông tin bài nhạc" disabled={value !== 1} />
                         </Tabs>
                     </Box>
                     <CustomTabPanel value={value} index={0}>
@@ -108,16 +108,32 @@ const UploadTabs = ({ userVip }: Iprops) => {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title" style={{ color: '#d32f2f' }}>
-                    {'You are not a VIP member?'}
+                    {'Bạn không phải là thành viên VIP?'}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Please register to become our vip member, you can experience more
-                        amenities such as uploading your songs,...
+                        Hãy đăng ký trở thành thành viên vip của chúng tôi, bạn có thể
+                        trải nghiệm nhiều tiện ích hơn như upload bài hát của mình,...
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Agree</Button>
+                    <Button
+                        variant="outlined"
+                        size="small"
+                        sx={{
+                            margin: '0px 10px 10px 0px',
+                            padding: '3px 0px',
+                            borderColor: '#e5e5e5',
+                            color: '#333',
+                            fontSize: '16px',
+                            fontWeight: '400',
+                            textTransform: 'unset',
+                            ':hover': { color: '#f50', borderColor: '#f50' },
+                        }}
+                        onClick={handleClose}
+                    >
+                        Đồng ý
+                    </Button>
                 </DialogActions>
             </Dialog>
         </>

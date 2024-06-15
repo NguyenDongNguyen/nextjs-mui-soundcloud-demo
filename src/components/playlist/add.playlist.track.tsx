@@ -70,7 +70,7 @@ const AddPlaylistTrack = (props: IProps) => {
         tracks = tracks?.filter((item) => item);
         if (chosenPlaylist) {
             const res = await sendRequest<IBackendRes<any>>({
-                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/playlists`,
+                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/playlists/multi-track`,
                 method: 'PATCH',
                 body: {
                     id: chosenPlaylist.id,
@@ -108,18 +108,18 @@ const AddPlaylistTrack = (props: IProps) => {
                 variant="outlined"
                 onClick={() => setOpen(true)}
             >
-                Tracks
+                Thêm nhiều bài nhạc
             </Button>
 
             <Dialog open={open} onClose={handleClose} maxWidth={'sm'} fullWidth>
-                <DialogTitle>Thêm track to playlist:</DialogTitle>
+                <DialogTitle>Thêm bài nhạc vào danh sách:</DialogTitle>
                 <DialogContent>
                     <Box
                         width={'100%'}
                         sx={{ display: 'flex', gap: '30px', flexDirection: 'column' }}
                     >
                         <FormControl fullWidth variant="standard" sx={{ mt: 1 }}>
-                            <InputLabel>Chọn playlist</InputLabel>
+                            <InputLabel>Chọn danh sách</InputLabel>
                             <Select
                                 value={playlistId}
                                 label="Playlist"
@@ -137,7 +137,9 @@ const AddPlaylistTrack = (props: IProps) => {
                     </Box>
                     <Box>
                         <FormControl sx={{ mt: 5, width: '100%' }}>
-                            <InputLabel id="demo-multiple-chip-label">Track</InputLabel>
+                            <InputLabel id="demo-multiple-chip-label">
+                                Bài nhạc
+                            </InputLabel>
                             <Select
                                 multiple
                                 value={tracksId}
@@ -189,8 +191,8 @@ const AddPlaylistTrack = (props: IProps) => {
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleClose('', '')}>Cancel</Button>
-                    <Button onClick={() => handleSubmit()}>Save</Button>
+                    <Button onClick={() => handleClose('', '')}>Thoát</Button>
+                    <Button onClick={() => handleSubmit()}>Lưu</Button>
                 </DialogActions>
             </Dialog>
         </>

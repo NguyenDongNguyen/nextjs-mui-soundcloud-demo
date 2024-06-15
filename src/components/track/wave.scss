@@ -46,10 +46,11 @@
 
 .sidebar-header {
     display: flex;
+    gap: 10px;
     align-items: center;
     margin-top: 10px;
     padding: 8px 0;
-    font-size: 16px;
+    font-size: 14px;
     color: #999;
     font-weight: 400;
     border-bottom: 1px solid #f2f2f2;
@@ -59,6 +60,7 @@
     padding-top: 10px;
     display: flex;
     align-items: center;
+    gap: 10px;
 
     .imgThumb {
         position: relative;
@@ -86,6 +88,10 @@
         font-size: 16px;
         font-weight: 400;
         line-height: 1.2;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
     .sidebar-content-des {
         color: #999;
